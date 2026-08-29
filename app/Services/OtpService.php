@@ -14,46 +14,102 @@ class OtpService
 
     private int $maxAttempts = 5;
 
-    public function send(string $mobile, ?string $requestIp = null): OtpCode
-    {
-        return DB::transaction(function () use ($mobile, $requestIp) {
+    public function __construct(
+        protected SmsService $smsService
+    ) {
+    }
 
-            OtpCode::where('mobile', $mobile)
+    /**
+     * Generate and send OTP.
+     */
+    public function send(
+        string $mobile,
+        ?string $requestIp = null
+    ): OtpCode {
+        $otp = DB::transaction(function () use (
+            $mobile,
+            $requestIp
+        ) {
+
+            /*
+             * Invalidate previous active codes.
+             */
+            OtpCode::query()
+                ->where('mobile', $mobile)
                 ->whereNull('verified_at')
                 ->update([
                     'verified_at' => now(),
                 ]);
 
+
+            /*
+             * Generate new code.
+             */
             $code = $this->generateCode();
 
+
+            /*
+             * Store OTP.
+             */
             return OtpCode::create([
                 'mobile' => $mobile,
+
                 'code' => $code,
-                'expires_at' => now()->addMinutes($this->otpLifetimeMinutes),
+
+                'expires_at' => now()->addMinutes(
+                    $this->otpLifetimeMinutes
+                ),
+
                 'attempts' => 0,
+
+                'verified_at' => null,
+
                 'request_ip' => $requestIp,
             ]);
         });
+
+
+        /*
+         * Send SMS only after the OTP has been
+         * successfully stored in the database.
+         */
+        $this->smsService->sendOtp(
+            $otp->mobile,
+            $otp->code
+        );
+
+
+        return $otp;
     }
 
-    public function verify(string $mobile, string $code): OtpCode
-    {
-        $otp = OtpCode::where('mobile', $mobile)
+
+    /**
+     * Verify OTP code.
+     */
+    public function verify(
+        string $mobile,
+        string $code
+    ): OtpCode {
+        $otp = OtpCode::query()
+            ->where('mobile', $mobile)
             ->whereNull('verified_at')
             ->latest('id')
             ->first();
 
+
         if (!$otp) {
             throw ValidationException::withMessages([
-                'code' => 'کد تاییدی برای این شماره پیدا نشد.',
+                'code' => 'کد تأییدی برای این شماره پیدا نشد.',
             ]);
         }
 
+
         if ($otp->isExpired()) {
             throw ValidationException::withMessages([
-                'code' => 'کد تایید منقضی شده است.',
+                'code' => 'کد تأیید منقضی شده است.',
             ]);
         }
+
 
         if ($otp->attempts >= $this->maxAttempts) {
             throw ValidationException::withMessages([
@@ -61,25 +117,44 @@ class OtpService
             ]);
         }
 
-        if ($otp->code !== $code) {
+
+        /*
+         * Wrong code.
+         */
+        if (!hash_equals(
+            (string) $otp->code,
+            (string) $code
+        )) {
             $otp->increment('attempts');
 
             throw ValidationException::withMessages([
-                'code' => 'کد تایید اشتباه است.',
+                'code' => 'کد تأیید اشتباه است.',
             ]);
         }
 
+
+        /*
+         * Successful verification.
+         */
         $otp->update([
             'verified_at' => now(),
         ]);
 
+
         return $otp->fresh();
     }
 
+
+    /**
+     * Generate numeric OTP.
+     */
     private function generateCode(): string
     {
         return str_pad(
-            (string) random_int(0, 999999),
+            (string) random_int(
+                0,
+                999999
+            ),
             $this->otpLength,
             '0',
             STR_PAD_LEFT

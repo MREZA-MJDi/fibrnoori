@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\FiberRequest\UpdateFiberRequestStatusRequest;
 use App\Models\FiberRequest;
 use App\Services\FiberRequestService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class FiberRequestController extends Controller
@@ -16,20 +17,42 @@ class FiberRequestController extends Controller
     ) {
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $fiberRequests = FiberRequest::query()
+        $requests = FiberRequest::query()
             ->with([
-                'user',
-                'tariff',
-                'modem',
+                'user:id,name,mobile',
+                'tariff:id,name,speed_mbps,price',
+                'modem:id,name,price',
             ])
-            ->latest()
-            ->paginate(20);
+            ->when(
+                $request->filled('search'),
+                function ($query) use ($request) {
+                    $search = trim($request->string('search')->toString());
+
+                    $query->where(function ($query) use ($search) {
+                        $query
+                            ->where('tracking_code', 'like', "%{$search}%")
+                            ->orWhere('full_name', 'like', "%{$search}%")
+                            ->orWhere('mobile', 'like', "%{$search}%")
+                            ->orWhere('national_code', 'like', "%{$search}%");
+                    });
+                }
+            )
+            ->when(
+                $request->filled('status'),
+                fn ($query) => $query->where(
+                    'status',
+                    $request->string('status')->toString()
+                )
+            )
+            ->latest('created_at')
+            ->paginate(20)
+            ->withQueryString();
 
         return view(
             'admin.requests.index',
-            compact('fiberRequests')
+            compact('requests')
         );
     }
 
@@ -37,15 +60,17 @@ class FiberRequestController extends Controller
         FiberRequest $fiberRequest
     ): View {
         $fiberRequest->load([
-            'user',
-            'tariff',
-            'modem',
-            'statusHistories.changedBy',
+            'user:id,name,mobile',
+            'tariff:id,name,speed_mbps,price',
+            'modem:id,name,price',
+            'statusHistories.changedBy:id,name,mobile',
         ]);
 
         return view(
             'admin.requests.show',
-            compact('fiberRequest')
+            [
+                'request' => $fiberRequest,
+            ]
         );
     }
 

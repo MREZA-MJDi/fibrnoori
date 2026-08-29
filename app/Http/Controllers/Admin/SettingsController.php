@@ -9,6 +9,13 @@ class SettingsController extends Controller
 {
     public function index(): View
     {
-        return view('admin.settings');
+        $settings = [
+            'site_name' => 'فیبره نوری',
+            'service_name' => 'اینترنت فیبر نوری',
+            'system_status' => 'active',
+            'sms_status' => 'ready',
+        ];
+
+        return view('admin.settings', compact('settings'));
     }
 }

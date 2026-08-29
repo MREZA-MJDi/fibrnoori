@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Modem\StoreModemRequest;
 use App\Http\Requests\Admin\Modem\UpdateModemRequest;
 use App\Models\Modem;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ModemController extends Controller
@@ -15,7 +16,7 @@ class ModemController extends Controller
     {
         $modems = Modem::query()
             ->orderBy('sort_order')
-            ->latest()
+            ->orderByDesc('id')
             ->paginate(20);
 
         return view(
@@ -32,9 +33,17 @@ class ModemController extends Controller
     public function store(
         StoreModemRequest $request
     ): RedirectResponse {
-        Modem::create(
-            $request->validated()
-        );
+        $data = $request->validated();
+
+        unset($data['image']);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request
+                ->file('image')
+                ->store('modems', 'public');
+        }
+
+        Modem::create($data);
 
         return redirect()
             ->route('admin.modems.index')
@@ -56,9 +65,41 @@ class ModemController extends Controller
         UpdateModemRequest $request,
         Modem $modem
     ): RedirectResponse {
-        $modem->update(
-            $request->validated()
+        $data = $request->validated();
+
+        unset(
+            $data['image'],
+            $data['remove_image']
         );
+
+        /*
+         * Remove current image.
+         */
+        if (
+            $request->boolean('remove_image')
+            && $modem->image
+        ) {
+            $this->deleteImage($modem->image);
+
+            $data['image'] = null;
+        }
+
+        /*
+         * Upload new image.
+         */
+        if ($request->hasFile('image')) {
+            $newImage = $request
+                ->file('image')
+                ->store('modems', 'public');
+
+            if ($modem->image) {
+                $this->deleteImage($modem->image);
+            }
+
+            $data['image'] = $newImage;
+        }
+
+        $modem->update($data);
 
         return redirect()
             ->route('admin.modems.index')
@@ -71,6 +112,10 @@ class ModemController extends Controller
     public function destroy(
         Modem $modem
     ): RedirectResponse {
+        if ($modem->image) {
+            $this->deleteImage($modem->image);
+        }
+
         $modem->delete();
 
         return redirect()
@@ -79,5 +124,14 @@ class ModemController extends Controller
                 'success',
                 'مودم با موفقیت حذف شد.'
             );
+    }
+
+    private function deleteImage(string $path): void
+    {
+        $disk = Storage::disk('public');
+
+        if ($disk->exists($path)) {
+            $disk->delete($path);
+        }
     }
 }

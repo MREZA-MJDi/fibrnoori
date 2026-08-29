@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\FiberRequestController as AccountFiberRequestCo
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FiberRequestController as AdminFiberRequestController;
 use App\Http\Controllers\Admin\ModemController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TariffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -49,6 +50,12 @@ Route::middleware('guest')->group(function () {
         ->name('auth.verify-otp');
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Logout
+|--------------------------------------------------------------------------
+*/
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
@@ -101,6 +108,12 @@ Route::middleware(['auth', 'customer'])
         Route::post('/requests', [AccountFiberRequestController::class, 'store'])
             ->name('requests.store');
 
+        Route::get('/requests/{fiberRequest}/edit', [AccountFiberRequestController::class, 'edit'])
+            ->name('requests.edit');
+
+        Route::put('/requests/{fiberRequest}', [AccountFiberRequestController::class, 'update'])
+            ->name('requests.update');
+
         Route::get('/requests/{fiberRequest}', [AccountFiberRequestController::class, 'show'])
             ->name('requests.show');
     });
@@ -152,7 +165,9 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('tariffs', TariffController::class)
-            ->except(['show']);
+            ->except([
+                'show',
+            ]);
 
 
         /*
@@ -162,7 +177,9 @@ Route::middleware(['auth', 'admin'])
         */
 
         Route::resource('modems', ModemController::class)
-            ->except(['show']);
+            ->except([
+                'show',
+            ]);
 
 
         /*
@@ -171,6 +188,6 @@ Route::middleware(['auth', 'admin'])
         |--------------------------------------------------------------------------
         */
 
-        Route::view('/settings', 'admin.settings')
+        Route::get('/settings', [SettingsController::class, 'index'])
             ->name('settings');
     });

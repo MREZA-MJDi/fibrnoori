@@ -32,17 +32,22 @@ class AuthController extends Controller
             $request->ip()
         );
 
+        session()->put([
+            'auth.otp.mobile' => $mobile,
+            'auth.otp.requested_at' => now()->timestamp,
+        ]);
+
         return redirect()
             ->route('auth.verify')
-            ->with([
-                'success' => 'کد تایید ارسال شد.',
-                'mobile' => $mobile,
-            ]);
+            ->with(
+                'success',
+                'کد تأیید با موفقیت ارسال شد.'
+            );
     }
 
     public function showVerify(): View|RedirectResponse
     {
-        $mobile = session('mobile');
+        $mobile = session('auth.otp.mobile');
 
         if (!$mobile) {
             return redirect()
@@ -62,12 +67,26 @@ class AuthController extends Controller
     public function verifyOtp(
         VerifyOtpRequest $request
     ): RedirectResponse {
-        $mobile = $request->validated('mobile');
-        $code = $request->validated('code');
+        $mobile = session('auth.otp.mobile');
+
+        if (!$mobile) {
+            return redirect()
+                ->route('auth.login')
+                ->with(
+                    'error',
+                    'فرآیند تأیید منقضی شده است. دوباره درخواست کد کنید.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Never trust the mobile number sent by the browser.
+        |--------------------------------------------------------------------------
+        */
 
         $this->otpService->verify(
             $mobile,
-            $code
+            $request->validated('code')
         );
 
         $user = User::firstOrCreate(
@@ -93,12 +112,44 @@ class AuthController extends Controller
             ->session()
             ->regenerate();
 
-        $intended = session()->pull(
-            'url.intended',
-            route('account.dashboard')
-        );
+        /*
+        |--------------------------------------------------------------------------
+        | Clear temporary OTP session data after successful login.
+        |--------------------------------------------------------------------------
+        */
 
-        return redirect($intended)
+        session()->forget([
+            'auth.otp.mobile',
+            'auth.otp.requested_at',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Role based destination
+        |--------------------------------------------------------------------------
+        */
+
+        $intended = session()->pull('url.intended');
+
+        if ($intended) {
+            return redirect($intended)
+                ->with(
+                    'success',
+                    'با موفقیت وارد حساب کاربری شدید.'
+                );
+        }
+
+        if ($user->isAdmin()) {
+            return redirect()
+                ->route('admin.dashboard')
+                ->with(
+                    'success',
+                    'با موفقیت وارد پنل مدیریت شدید.'
+                );
+        }
+
+        return redirect()
+            ->route('account.dashboard')
             ->with(
                 'success',
                 'با موفقیت وارد حساب کاربری شدید.'
@@ -124,4 +175,6 @@ class AuthController extends Controller
                 'با موفقیت از حساب خارج شدید.'
             );
     }
+
+
 }

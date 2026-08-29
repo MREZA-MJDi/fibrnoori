@@ -1,5 +1,5 @@
 <x-layouts.account
-    title="ثبت درخواست | فیبره نوری"
+    title="ثبت درخواست | فیبر نوری"
     heading="ثبت درخواست جدید"
 >
 
@@ -7,39 +7,49 @@
 
         {{-- Header --}}
         <section>
-            <p class="text-sm font-bold text-primary-600">
-                درخواست اتصال
-            </p>
 
-            <h2 class="mt-1 text-xl font-black text-slate-950 sm:text-2xl">
+            <span class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700">
+                درخواست اتصال
+            </span>
+
+            <h2 class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
                 ثبت درخواست فیبر نوری
             </h2>
 
-            <p class="mt-2 text-sm leading-7 text-slate-500">
+            <p class="mt-2 text-sm leading-8 text-slate-500">
                 اطلاعات خود را با دقت وارد کنید تا درخواست شما سریع‌تر بررسی شود.
             </p>
+
         </section>
+
+
+        <x-flash />
+
 
         <form
             method="POST"
-            action="{{ url('/account/requests') }}"
+            action="{{ route('account.requests.store') }}"
             class="space-y-6"
         >
 
             @csrf
 
-            {{-- Customer information --}}
+
+            {{-- Customer --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
+
                     <h3 class="text-base font-black text-slate-950">
                         اطلاعات متقاضی
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        مشخصات هویتی خود را وارد کنید.
+                        اطلاعات هویتی و تماس خود را وارد کنید.
                     </p>
+
                 </div>
+
 
                 <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
@@ -47,8 +57,8 @@
                         name="full_name"
                         label="نام و نام خانوادگی"
                         :value="old('full_name', auth()->user()->name)"
-                        required
                         autocomplete="name"
+                        required
                     />
 
                     <x-input
@@ -66,6 +76,8 @@
                         type="tel"
                         :value="old('mobile', auth()->user()->mobile)"
                         inputmode="tel"
+                        autocomplete="tel"
+                        maxlength="11"
                         required
                     />
 
@@ -73,7 +85,8 @@
 
             </section>
 
-            {{-- Service selection --}}
+
+            {{-- Service --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
@@ -83,10 +96,11 @@
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        تعرفه و مودم موردنظر خود را انتخاب کنید.
+                        تعرفه و در صورت نیاز مودم موردنظر خود را انتخاب کنید.
                     </p>
 
                 </div>
+
 
                 <div class="grid gap-5 p-5 sm:p-7">
 
@@ -116,11 +130,14 @@
 
                                 <option
                                     value="{{ $tariff->id }}"
-                                    @selected(old('tariff_id') == $tariff->id)
+                                    @selected(
+                                    old('tariff_id') == $tariff->id ||
+                                ($selectedTariff ?? null) === $tariff->slug
+                                )
                                 >
                                 {{ $tariff->name }}
                                 — {{ number_format($tariff->price) }} تومان
-                                — {{ $tariff->speed_mbps }} مگابیت
+                                — {{ number_format($tariff->speed_mbps) }} Mbps
                                 </option>
 
                             @endforeach
@@ -134,6 +151,7 @@
                         @enderror
 
                     </div>
+
 
                     {{-- Modem --}}
                     <div class="space-y-2">
@@ -162,7 +180,10 @@
 
                                 <option
                                     value="{{ $modem->id }}"
-                                    @selected(old('modem_id') == $modem->id)
+                                    @selected(
+                                    old('modem_id') == $modem->id ||
+                                ($selectedModem ?? null) === $modem->slug
+                                )
                                 >
                                 {{ $modem->name }}
                                 — {{ number_format($modem->price) }} تومان
@@ -184,6 +205,7 @@
 
             </section>
 
+
             {{-- Address --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
@@ -198,6 +220,7 @@
                     </p>
 
                 </div>
+
 
                 <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
@@ -214,6 +237,7 @@
                         :value="old('city')"
                         required
                     />
+
 
                     <div class="space-y-2 sm:col-span-2">
 
@@ -242,6 +266,7 @@
 
                     </div>
 
+
                     <x-input
                         name="postal_code"
                         label="کد پستی"
@@ -255,7 +280,8 @@
 
             </section>
 
-            {{-- Customer note --}}
+
+            {{-- Note --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
@@ -265,10 +291,11 @@
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        در صورت نیاز توضیحی برای کارشناس بنویسید.
+                        در صورت نیاز توضیح تکمیلی خود را وارد کنید.
                     </p>
 
                 </div>
+
 
                 <div class="p-5 sm:p-7">
 
@@ -289,17 +316,22 @@
 
             </section>
 
+
             {{-- Actions --}}
             <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
-                <x-button
-                    href="{{ url('/account/requests') }}"
-                    variant="secondary"
+                <a
+                    href="{{ route('account.requests.index') }}"
+                    class="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 px-5 text-sm font-black text-slate-700 transition hover:bg-slate-50"
                 >
                     انصراف
-                </x-button>
+                </a>
 
-                <x-button type="submit" size="lg">
+
+                <button
+                    type="submit"
+                    class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-black text-white shadow-sm transition hover:bg-primary-700 focus-visible:ring-4 focus-visible:ring-primary-100 active:scale-[0.99]"
+                >
                     ثبت درخواست
 
                     <svg
@@ -313,10 +345,11 @@
                         <path
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            d="M5 13l4 4L19 7"
+                            d="m5 12 4 4L19 7"
                         />
                     </svg>
-                </x-button>
+
+                </button>
 
             </div>
 

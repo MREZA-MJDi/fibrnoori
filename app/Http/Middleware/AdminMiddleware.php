@@ -14,7 +14,12 @@ class AdminMiddleware
     ): Response {
         $user = $request->user();
 
-        if (!$user || !$user->isAdmin()) {
+        if (!$user) {
+            return redirect()
+                ->route('auth.login');
+        }
+
+        if (!$user->isAdmin()) {
             return response()->view(
                 'errors.access-denied',
                 [],

@@ -15,7 +15,7 @@ class TariffController extends Controller
     {
         $tariffs = Tariff::query()
             ->orderBy('sort_order')
-            ->latest()
+            ->orderByDesc('id')
             ->paginate(20);
 
         return view(

@@ -20,10 +20,9 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view(
-            'site.tariffs',
-            compact('tariffs')
-        );
+        return view('site.tariffs', [
+            'tariffs' => $tariffs,
+        ]);
     }
 
     public function modems(): View
@@ -34,10 +33,9 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view(
-            'site.modems',
-            compact('modems')
-        );
+        return view('site.modems', [
+            'modems' => $modems,
+        ]);
     }
 
     public function contact(): View

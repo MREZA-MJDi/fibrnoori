@@ -14,7 +14,12 @@ class CustomerMiddleware
     ): Response {
         $user = $request->user();
 
-        if (!$user || !$user->isCustomer()) {
+        if (!$user) {
+            return redirect()
+                ->route('auth.login');
+        }
+
+        if (!$user->isCustomer()) {
             return response()->view(
                 'errors.access-denied',
                 [],

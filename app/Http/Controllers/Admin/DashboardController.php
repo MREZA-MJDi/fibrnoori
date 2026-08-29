@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FiberRequest;
+use App\Models\Modem;
+use App\Models\Tariff;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -37,11 +39,30 @@ class DashboardController extends Controller
                 'status',
                 'rejected'
             )->count(),
+
+            'total_tariffs' => Tariff::count(),
+
+            'total_modems' => Modem::count(),
         ];
 
-        return view(
-            'admin.dashboard',
-            compact('stats')
-        );
+        $latestRequests = FiberRequest::query()
+            ->with([
+                'user:id,name,mobile',
+                'tariff:id,name',
+                'modem:id,name',
+            ])
+            ->latest('created_at')
+            ->take(8)
+            ->get();
+
+        $newRequestsCount = FiberRequest::query()
+            ->where('status', 'pending')
+            ->count();
+
+        return view('admin.dashboard', [
+            'stats' => $stats,
+            'latestRequests' => $latestRequests,
+            'newRequestsCount' => $newRequestsCount,
+        ]);
     }
 }

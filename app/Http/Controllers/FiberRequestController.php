@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\FiberRequest\StoreFiberRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FiberRequest\UpdateFiberRequestStatusRequest;
 use App\Models\FiberRequest;
-use App\Models\Modem;
-use App\Models\Tariff;
 use App\Services\FiberRequestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,77 +19,99 @@ class FiberRequestController extends Controller
 
     public function index(Request $request): View
     {
-        $fiberRequests = FiberRequest::query()
-            ->where('user_id', $request->user()->id)
+        $query = FiberRequest::query()
             ->with([
+                'user',
                 'tariff',
                 'modem',
             ])
-            ->latest()
-            ->paginate(10);
+            ->latest();
+
+
+        /*
+         * Search
+         */
+        $search = trim((string) $request->input('search'));
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+
+                $q->where('tracking_code', 'like', "%{$search}%")
+                    ->orWhere('full_name', 'like', "%{$search}%")
+                    ->orWhere('mobile', 'like', "%{$search}%")
+                    ->orWhere('national_code', 'like', "%{$search}%");
+            });
+        }
+
+
+        /*
+         * Status filter
+         */
+        $allowedStatuses = [
+            'pending',
+            'reviewing',
+            'approved',
+            'completed',
+            'rejected',
+        ];
+
+        $status = $request->input('status');
+
+        if (
+            is_string($status)
+            && in_array($status, $allowedStatuses, true)
+        ) {
+            $query->where('status', $status);
+        }
+
+
+        /*
+         * Pagination
+         */
+        $fiberRequests = $query
+            ->paginate(20)
+            ->withQueryString();
+
 
         return view(
-            'fiber-requests.index',
+            'admin.requests.index',
             compact('fiberRequests')
         );
     }
 
-    public function create(): View
-    {
-        $tariffs = Tariff::query()
-            ->active()
-            ->get();
-
-        $modems = Modem::query()
-            ->active()
-            ->get();
-
-        return view(
-            'fiber-requests.create',
-            compact(
-                'tariffs',
-                'modems'
-            )
-        );
-    }
-
-    public function store(
-        StoreFiberRequest $request
-    ): RedirectResponse {
-        $fiberRequest = $this->fiberRequestService->create(
-            $request->validated(),
-            $request->user()->id
-        );
-
-        return redirect()
-            ->route(
-                'fiber-requests.show',
-                $fiberRequest
-            )
-            ->with(
-                'success',
-                'درخواست شما با موفقیت ثبت شد.'
-            );
-    }
 
     public function show(
-        Request $request,
         FiberRequest $fiberRequest
     ): View {
-        abort_unless(
-            $fiberRequest->user_id === $request->user()->id,
-            403
-        );
-
         $fiberRequest->load([
+            'user',
             'tariff',
             'modem',
-            'statusHistories',
+            'statusHistories.changedBy',
         ]);
 
         return view(
-            'fiber-requests.show',
+            'admin.requests.show',
             compact('fiberRequest')
+        );
+    }
+
+
+    public function updateStatus(
+        UpdateFiberRequestStatusRequest $request,
+        FiberRequest $fiberRequest
+    ): RedirectResponse {
+        $this->fiberRequestService->updateStatus(
+            $fiberRequest,
+            $request->validated('status'),
+            $request->validated('note'),
+            $request->user()->id,
+            $request->ip()
+        );
+
+        return back()->with(
+            'success',
+            'وضعیت درخواست با موفقیت تغییر کرد.'
         );
     }
 }
