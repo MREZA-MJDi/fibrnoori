@@ -1,59 +1,203 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Fibrnoori
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Fibrnoori** is a modern web platform for ordering and managing fiber-optic internet services. The platform provides users with a simple online process to explore available plans and modems, submit a fiber-optic connection request, and track the status of their application.
 
-## About Laravel
+## About
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Fibrnoori was developed to simplify the process of requesting fiber-optic internet services through a modern web interface.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Instead of relying on traditional registration processes, users can explore available internet plans, review available equipment, authenticate using their mobile number, provide their required information and address, and submit their connection request online.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The platform is designed around a straightforward user experience while providing a structured foundation for managing service requests.
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* Fiber-optic internet service presentation
+* Internet plan and tariff listing
+* Modem and equipment listing
+* Online fiber-optic connection requests
+* Mobile number authentication
+* Verification-code based login
+* Customer information collection
+* Address registration
+* Request status tracking
+* Customer account area
+* Responsive RTL interface
+* Structured service-request workflow
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## User Flow
 
-## Laravel Sponsors
+The connection request process is designed around a simple multi-step workflow:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```text
+Mobile Authentication
+        ↓
+Select Internet Plan
+        ↓
+Select Modem (Optional)
+        ↓
+Enter Customer Information
+        ↓
+Enter Address
+        ↓
+Submit Connection Request
+        ↓
+Track Request Status
+```
 
-### Premium Partners
+## Main Sections
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Home
 
-## Contributing
+The landing page introduces the fiber-optic service and highlights key benefits such as high speed, connection stability, and online request submission.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Internet Plans
 
-## Code of Conduct
+Users can browse available internet tariffs and choose a suitable service based on their requirements.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Modems
 
-## Security Vulnerabilities
+The platform provides information about available modems and equipment that can be selected during the connection process.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Connection Request
 
-## License
+Users can start an online connection request and provide the information required for service activation.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Customer Account
+
+Authenticated users can access their account and follow the status of their submitted connection requests.
+
+## Technology Stack
+
+* **Backend:** PHP, Laravel
+* **Frontend:** Blade, HTML, CSS, JavaScript
+* **Database:** MySQL
+* **Build Tool:** Vite
+* **Architecture:** MVC
+* **Authentication:** Mobile number / verification code
+* **ORM:** Laravel Eloquent
+
+## Architecture
+
+The application follows Laravel's MVC architecture and separates the main responsibilities of the application into dedicated layers.
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   └── Requests/
+├── Models/
+└── ...
+
+database/
+├── migrations/
+└── seeders/
+
+resources/
+├── views/
+└── ...
+
+routes/
+└── web.php
+```
+
+This structure makes the application easier to maintain and provides a clear foundation for extending the service-request workflow.
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/MREZA-MJDi/fibrnoori.git
+cd fibrnoori
+```
+
+Install PHP dependencies:
+
+```bash
+composer install
+```
+
+Install frontend dependencies:
+
+```bash
+npm install
+```
+
+Create the environment file:
+
+```bash
+cp .env.example .env
+```
+
+Generate the Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+Configure the database and required environment variables in `.env`.
+
+Run database migrations:
+
+```bash
+php artisan migrate
+```
+
+If seed data is available:
+
+```bash
+php artisan db:seed
+```
+
+Create the storage link when required:
+
+```bash
+php artisan storage:link
+```
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Run Vite during development:
+
+```bash
+npm run dev
+```
+
+## Production Build
+
+Build the frontend assets for production:
+
+```bash
+npm run build
+```
+
+## Project Goals
+
+The main goal of Fibrnoori is to provide a clear and accessible digital workflow for fiber-optic internet registration.
+
+The project focuses on:
+
+* Simplifying the connection-request process
+* Reducing unnecessary registration steps
+* Providing clear service and equipment information
+* Allowing customers to track their requests
+* Building a maintainable Laravel application architecture
+
+## Live Website
+
+**Fibrnoori — Fiber-Optic Internet Platform**
+
+https://fibernet.cam/
+
+## Author
+
+**Mohammad Reza Majidi**
+
+Full-Stack Web Developer
+
+GitHub: https://github.com/MREZA-MJDi
