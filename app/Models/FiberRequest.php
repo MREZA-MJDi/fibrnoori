@@ -12,20 +12,39 @@ class FiberRequest extends Model
         'user_id',
         'tariff_id',
         'modem_id',
+
         'tracking_code',
+
+        // Customer identity
         'full_name',
+        'father_name',
         'national_code',
+        'birth_certificate_number',
+        'birth_date',
+
+        // Contact
         'mobile',
+        'landline',
+
+        // Address
         'province',
         'city',
         'address',
         'postal_code',
+
+        // Price snapshot
         'tariff_price',
         'modem_price',
         'total_price',
+
+        // Request status
         'status',
+
+        // Notes
         'admin_note',
         'customer_note',
+
+        // Dates
         'reviewed_at',
         'completed_at',
     ];
@@ -34,6 +53,7 @@ class FiberRequest extends Model
         'tariff_price' => 'integer',
         'modem_price' => 'integer',
         'total_price' => 'integer',
+
         'reviewed_at' => 'datetime',
         'completed_at' => 'datetime',
     ];

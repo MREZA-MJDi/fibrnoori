@@ -1,5 +1,5 @@
 <x-layouts.account
-    title="ویرایش درخواست | فیبره نوری"
+    title="ویرایش درخواست | فیبر نوری"
     heading="ویرایش درخواست"
 >
 
@@ -19,6 +19,7 @@
                 اطلاعات درخواست خود را بررسی و در صورت نیاز اصلاح کنید.
             </p>
         </section>
+
 
         {{-- Request status --}}
         <section class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
@@ -49,8 +50,7 @@
                     </p>
 
                     <p class="mt-1 text-xs leading-6 text-amber-800">
-                        در صورتی که درخواست توسط کارشناس در حال بررسی باشد،
-                        بعضی اطلاعات ممکن است قابل ویرایش نباشند.
+                        تا زمانی که درخواست در وضعیت انتظار باشد، امکان ویرایش اطلاعات وجود دارد.
                     </p>
                 </div>
 
@@ -58,14 +58,16 @@
 
         </section>
 
+
         <form
             method="POST"
-            action="{{ url('/account/requests/' . $request->id) }}"
+            action="{{ route('account.requests.update', $request) }}"
             class="space-y-6"
         >
 
             @csrf
             @method('PUT')
+
 
             {{-- Customer information --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -77,10 +79,11 @@
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        اطلاعات هویتی درخواست
+                        اطلاعات هویتی و تماس خود را بررسی کنید.
                     </p>
 
                 </div>
+
 
                 <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
@@ -88,6 +91,13 @@
                         name="full_name"
                         label="نام و نام خانوادگی"
                         :value="old('full_name', $request->full_name)"
+                        required
+                    />
+
+                    <x-input
+                        name="father_name"
+                        label="نام پدر"
+                        :value="old('father_name', $request->father_name)"
                         required
                     />
 
@@ -101,17 +111,48 @@
                     />
 
                     <x-input
+                        name="birth_certificate_number"
+                        label="شماره شناسنامه"
+                        :value="old('birth_certificate_number', $request->birth_certificate_number)"
+                        inputmode="numeric"
+                        maxlength="30"
+                        required
+                    />
+
+                    <x-input
+                        name="birth_date"
+                        label="تاریخ تولد"
+                        :value="old('birth_date', $request->birth_date)"
+                        inputmode="numeric"
+                        maxlength="10"
+                        placeholder="مثلاً 1378/05/12"
+                        required
+                    />
+
+                    <x-input
                         name="mobile"
                         label="شماره موبایل"
                         type="tel"
                         :value="old('mobile', $request->mobile)"
                         inputmode="tel"
+                        autocomplete="tel"
+                        maxlength="11"
                         required
+                    />
+
+                    <x-input
+                        name="landline"
+                        label="شماره ثابت"
+                        type="tel"
+                        :value="old('landline', $request->landline)"
+                        inputmode="tel"
+                        maxlength="20"
                     />
 
                 </div>
 
             </section>
+
 
             {{-- Service --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -119,12 +160,17 @@
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
 
                     <h3 class="text-base font-black text-slate-950">
-                        سرویس انتخابی
+                        انتخاب سرویس
                     </h3>
+
+                    <p class="mt-1 text-sm text-slate-500">
+                        تعرفه موردنظر خود را انتخاب کنید.
+                    </p>
 
                 </div>
 
-                <div class="grid gap-5 p-5 sm:p-7">
+
+                <div class="space-y-5 p-5 sm:p-7">
 
                     {{-- Tariff --}}
                     <div class="space-y-2">
@@ -150,9 +196,9 @@
                                     value="{{ $tariff->id }}"
                                     @selected(old('tariff_id', $request->tariff_id) == $tariff->id)
                                 >
-                                {{ $tariff->name }}
-                                — {{ number_format($tariff->price) }} تومان
-                                — {{ $tariff->speed_mbps }} مگابیت
+                                    {{ $tariff->name }}
+                                    · {{ number_format($tariff->price) }} تومان
+                                    · {{ number_format($tariff->speed_mbps) }} Mbps
                                 </option>
 
                             @endforeach
@@ -167,45 +213,44 @@
 
                     </div>
 
+
                     {{-- Modem --}}
-                    <div class="space-y-2">
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
 
                         <label
-                            for="modem_id"
-                            class="block text-sm font-bold text-slate-800"
+                            for="has_modem"
+                            class="flex cursor-pointer items-start gap-3"
                         >
-                            مودم
-                            <span class="text-xs font-medium text-slate-400">
-                                (اختیاری)
+
+                            <input
+                                id="has_modem"
+                                type="checkbox"
+                                name="has_modem"
+                                value="1"
+                                @checked(
+                                    old(
+                                        'has_modem',
+                                        $request->modem_id === null
+                                    )
+                                )
+                                class="mt-1 size-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                            >
+
+                            <span class="min-w-0">
+                                <span class="block text-sm font-black text-slate-900">
+                                    مودم دارم و نیازی به دریافت مودم ندارم
+                                </span>
+
+                                <span class="mt-1 block text-xs leading-6 text-slate-500">
+                                    در صورت انتخاب این گزینه، مودمی برای درخواست شما ثبت نمی‌شود.
+                                </span>
                             </span>
+
                         </label>
 
-                        <select
-                            id="modem_id"
-                            name="modem_id"
-                            class="block min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
-                        >
 
-                            <option value="">
-                                بدون مودم
-                            </option>
-
-                            @foreach ($modems as $modem)
-
-                                <option
-                                    value="{{ $modem->id }}"
-                                    @selected(old('modem_id', $request->modem_id) == $modem->id)
-                                >
-                                {{ $modem->name }}
-                                — {{ number_format($modem->price) }} تومان
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        @error('modem_id')
-                        <p class="text-xs font-medium leading-5 text-red-600">
+                        @error('has_modem')
+                        <p class="mt-2 text-xs font-medium leading-5 text-red-600">
                             {{ $message }}
                         </p>
                         @enderror
@@ -215,6 +260,7 @@
                 </div>
 
             </section>
+
 
             {{-- Address --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
@@ -227,7 +273,8 @@
 
                 </div>
 
-                <div class="grid gap-5 p-5 sm:p-7">
+
+                <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
                     <x-input
                         name="province"
@@ -243,7 +290,7 @@
                         required
                     />
 
-                    <div class="space-y-2">
+                    <div class="space-y-2 sm:col-span-2">
 
                         <label
                             for="address"
@@ -259,6 +306,7 @@
                             rows="4"
                             required
                             class="block w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
+                            placeholder="خیابان، کوچه، پلاک، واحد و..."
                         >{{ old('address', $request->address) }}</textarea>
 
                         @error('address')
@@ -282,6 +330,7 @@
 
             </section>
 
+
             {{-- Customer note --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
@@ -292,6 +341,7 @@
                     </h3>
 
                 </div>
+
 
                 <div class="p-5 sm:p-7">
 
@@ -312,17 +362,21 @@
 
             </section>
 
+
             {{-- Actions --}}
             <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
                 <x-button
-                    href="{{ url('/account/requests/' . $request->id) }}"
+                    href="{{ route('account.requests.show', $request) }}"
                     variant="secondary"
                 >
                     انصراف
                 </x-button>
 
-                <x-button type="submit" size="lg">
+                <x-button
+                    type="submit"
+                    size="lg"
+                >
                     ذخیره تغییرات
 
                     <svg

@@ -149,8 +149,20 @@ Route::middleware(['auth', 'admin'])
         Route::get('/requests', [AdminFiberRequestController::class, 'index'])
             ->name('requests.index');
 
-        Route::get('/requests/{fiberRequest}', [AdminFiberRequestController::class, 'show'])
-            ->name('requests.show');
+        Route::get(
+            '/requests/{fiberRequest}/export',
+            [AdminFiberRequestController::class, 'export']
+        )->name('requests.export');
+
+        Route::delete(
+            '/requests/{fiberRequest}/complete',
+            [AdminFiberRequestController::class, 'complete']
+        )->name('requests.complete');
+
+        Route::get(
+            '/requests/{fiberRequest}',
+            [AdminFiberRequestController::class, 'show']
+        )->name('requests.show');
 
         Route::patch(
             '/requests/{fiberRequest}/status',

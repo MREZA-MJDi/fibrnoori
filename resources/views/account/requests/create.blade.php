@@ -7,7 +7,6 @@
 
         {{-- Header --}}
         <section>
-
             <span class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700">
                 درخواست اتصال
             </span>
@@ -19,7 +18,6 @@
             <p class="mt-2 text-sm leading-8 text-slate-500">
                 اطلاعات خود را با دقت وارد کنید تا درخواست شما سریع‌تر بررسی شود.
             </p>
-
         </section>
 
 
@@ -39,7 +37,6 @@
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
-
                     <h3 class="text-base font-black text-slate-950">
                         اطلاعات متقاضی
                     </h3>
@@ -47,7 +44,6 @@
                     <p class="mt-1 text-sm text-slate-500">
                         اطلاعات هویتی و تماس خود را وارد کنید.
                     </p>
-
                 </div>
 
 
@@ -62,9 +58,35 @@
                     />
 
                     <x-input
+                        name="father_name"
+                        label="نام پدر"
+                        :value="old('father_name')"
+                        required
+                    />
+
+                    <x-input
                         name="national_code"
                         label="کد ملی"
                         :value="old('national_code')"
+                        inputmode="numeric"
+                        maxlength="10"
+                        required
+                    />
+
+                    <x-input
+                        name="birth_certificate_number"
+                        label="شماره شناسنامه"
+                        :value="old('birth_certificate_number')"
+                        inputmode="numeric"
+                        maxlength="30"
+                        required
+                    />
+
+                    <x-input
+                        name="birth_date"
+                        label="تاریخ تولد"
+                        :value="old('birth_date')"
+                        placeholder="مثلاً 1378/05/12"
                         inputmode="numeric"
                         maxlength="10"
                         required
@@ -79,6 +101,15 @@
                         autocomplete="tel"
                         maxlength="11"
                         required
+                    />
+
+                    <x-input
+                        name="landline"
+                        label="شماره ثابت"
+                        type="tel"
+                        :value="old('landline')"
+                        inputmode="tel"
+                        maxlength="20"
                     />
 
                 </div>
@@ -96,13 +127,13 @@
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        تعرفه و در صورت نیاز مودم موردنظر خود را انتخاب کنید.
+                        تعرفه موردنظر خود را انتخاب کنید.
                     </p>
 
                 </div>
 
 
-                <div class="grid gap-5 p-5 sm:p-7">
+                <div class="space-y-5 p-5 sm:p-7">
 
                     {{-- Tariff --}}
                     <div class="space-y-2">
@@ -121,7 +152,6 @@
                             required
                             class="block min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
                         >
-
                             <option value="">
                                 انتخاب تعرفه
                             </option>
@@ -130,14 +160,11 @@
 
                                 <option
                                     value="{{ $tariff->id }}"
-                                    @selected(
-                                    old('tariff_id') == $tariff->id ||
-                                ($selectedTariff ?? null) === $tariff->slug
-                                )
+                                    @selected(old('tariff_id') == $tariff->id)
                                 >
-                                {{ $tariff->name }}
-                                — {{ number_format($tariff->price) }} تومان
-                                — {{ number_format($tariff->speed_mbps) }} Mbps
+                                    {{ $tariff->name }}
+                                    · {{ number_format($tariff->price) }} تومان
+                                    · {{ number_format($tariff->speed_mbps) }} Mbps
                                 </option>
 
                             @endforeach
@@ -154,50 +181,33 @@
 
 
                     {{-- Modem --}}
-                    <div class="space-y-2">
+                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
 
                         <label
-                            for="modem_id"
-                            class="block text-sm font-bold text-slate-800"
+                            for="has_modem"
+                            class="flex cursor-pointer items-start gap-3"
                         >
-                            مودم
-                            <span class="text-xs font-medium text-slate-400">
-                                (اختیاری)
+
+                            <input
+                                id="has_modem"
+                                type="checkbox"
+                                name="has_modem"
+                                value="1"
+                                @checked(old('has_modem'))
+                                class="mt-1 size-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
+                            >
+
+                            <span class="min-w-0">
+                                <span class="block text-sm font-black text-slate-900">
+                                    مودم دارم و نیازی به دریافت مودم ندارم
+                                </span>
+
+                                <span class="mt-1 block text-xs leading-6 text-slate-500">
+                                    در صورت انتخاب این گزینه، برای شما مودم ثبت نمی‌شود.
+                                </span>
                             </span>
+
                         </label>
-
-                        <select
-                            id="modem_id"
-                            name="modem_id"
-                            class="block min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
-                        >
-
-                            <option value="">
-                                بدون مودم
-                            </option>
-
-                            @foreach ($modems as $modem)
-
-                                <option
-                                    value="{{ $modem->id }}"
-                                    @selected(
-                                    old('modem_id') == $modem->id ||
-                                ($selectedModem ?? null) === $modem->slug
-                                )
-                                >
-                                {{ $modem->name }}
-                                — {{ number_format($modem->price) }} تومان
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        @error('modem_id')
-                        <p class="text-xs font-medium leading-5 text-red-600">
-                            {{ $message }}
-                        </p>
-                        @enderror
 
                     </div>
 
@@ -291,7 +301,7 @@
                     </h3>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        در صورت نیاز توضیح تکمیلی خود را وارد کنید.
+                        در صورت نیاز توضیحات تکمیلی خود را وارد کنید.
                     </p>
 
                 </div>

@@ -8,7 +8,7 @@ use App\Models\Modem;
 use App\Models\Tariff;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use RuntimeException;
+use Illuminate\Validation\ValidationException;
 
 class FiberRequestService
 {
@@ -30,21 +30,36 @@ class FiberRequestService
 
 
             /*
-             * Optional modem.
+             * Modem logic:
+             *
+             * has_modem = true
+             * -> customer already has a modem
+             * -> no modem will be assigned
+             *
+             * has_modem = false
+             * -> assign first active modem with stock
              */
             $modem = null;
 
-            if (!empty($data['modem_id'])) {
+            $hasModem = filter_var(
+                $data['has_modem'] ?? false,
+                FILTER_VALIDATE_BOOLEAN
+            );
+
+            if (!$hasModem) {
 
                 $modem = Modem::query()
                     ->where('is_active', true)
+                    ->where('stock', '>', 0)
+                    ->orderBy('sort_order')
                     ->lockForUpdate()
-                    ->findOrFail($data['modem_id']);
+                    ->first();
 
-                if (!$modem->hasStock()) {
-                    throw new RuntimeException(
-                        'مودم انتخاب‌شده موجود نیست.'
-                    );
+                if (!$modem) {
+                    throw ValidationException::withMessages([
+                        'has_modem' =>
+                            'در حال حاضر مودم موجود نیست. لطفاً گزینه «مودم دارم» را انتخاب کنید یا بعداً دوباره تلاش کنید.',
+                    ]);
                 }
             }
 
@@ -69,19 +84,29 @@ class FiberRequestService
 
                 'tracking_code' => $this->generateTrackingCode(),
 
+                // Customer identity
                 'full_name' => $data['full_name'],
+                'father_name' => $data['father_name'],
                 'national_code' => $data['national_code'],
-                'mobile' => $data['mobile'],
+                'birth_certificate_number' => $data['birth_certificate_number'],
+                'birth_date' => $data['birth_date'],
 
+                // Contact
+                'mobile' => $data['mobile'],
+                'landline' => $data['landline'] ?? null,
+
+                // Address
                 'province' => $data['province'],
                 'city' => $data['city'],
                 'address' => $data['address'],
                 'postal_code' => $data['postal_code'],
 
+                // Price snapshot
                 'tariff_price' => $tariffPrice,
                 'modem_price' => $modemPrice,
                 'total_price' => $totalPrice,
 
+                // Status
                 'status' => 'pending',
 
                 'admin_note' => null,
@@ -93,7 +118,8 @@ class FiberRequestService
 
 
             /*
-             * Decrease modem stock.
+             * Decrease modem stock only when a modem
+             * has actually been assigned.
              */
             if ($modem) {
                 $modem->decrement('stock');
@@ -112,10 +138,7 @@ class FiberRequestService
 
 
         /*
-         * Dispatch only after the transaction has completed successfully.
-         *
-         * This prevents SMS from being sent if the database
-         * transaction fails or rolls back.
+         * Dispatch only after the transaction succeeds.
          */
         FiberRequestCreated::dispatch($fiberRequest);
 

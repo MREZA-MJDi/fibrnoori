@@ -2,12 +2,12 @@
     title="جزئیات درخواست | فیبر نوری"
     heading="جزئیات درخواست"
 >
+
     @php
         $statusLabels = [
             'pending' => 'در انتظار بررسی',
             'reviewing' => 'در حال بررسی',
             'approved' => 'تأیید شده',
-            'completed' => 'تکمیل شده',
             'rejected' => 'رد شده',
         ];
 
@@ -15,7 +15,6 @@
             'pending' => 'border-amber-200 bg-amber-50 text-amber-700',
             'reviewing' => 'border-blue-200 bg-blue-50 text-blue-700',
             'approved' => 'border-indigo-200 bg-indigo-50 text-indigo-700',
-            'completed' => 'border-emerald-200 bg-emerald-50 text-emerald-700',
             'rejected' => 'border-red-200 bg-red-50 text-red-700',
         ];
 
@@ -23,12 +22,19 @@
             'pending' => 'bg-amber-50 text-amber-700',
             'reviewing' => 'bg-blue-50 text-blue-700',
             'approved' => 'bg-indigo-50 text-indigo-700',
-            'completed' => 'bg-emerald-50 text-emerald-700',
             'rejected' => 'bg-red-50 text-red-700',
         ];
+
+        $currentStatusClass =
+            $statusClasses[$request->status]
+            ?? 'border-slate-200 bg-slate-50 text-slate-600';
     @endphp
 
+
     <div class="space-y-6">
+
+        <x-flash />
+
 
         {{-- Header --}}
         <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
@@ -40,7 +46,7 @@
                     <div class="flex flex-wrap items-center gap-2">
 
                         <span
-                            class="rounded-full border px-3 py-1.5 text-xs font-black {{ $statusClasses[$request->status] ?? 'border-slate-200 bg-slate-50 text-slate-600' }}"
+                            class="rounded-full border px-3 py-1.5 text-xs font-black {{ $currentStatusClass }}"
                         >
                             {{ $statusLabels[$request->status] ?? $request->status }}
                         </span>
@@ -56,7 +62,8 @@
                     </h2>
 
                     <p class="mt-2 text-sm text-slate-500">
-                        ثبت‌شده در {{ $request->created_at?->format('Y/m/d - H:i') }}
+                        ثبت شده در
+                        {{ $request->created_at?->format('Y/m/d - H:i') }}
                     </p>
 
                 </div>
@@ -69,6 +76,28 @@
                         class="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 px-5 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
                     >
                         بازگشت به درخواست‌ها
+                    </a>
+
+                    <a
+                        href="{{ route('admin.requests.export', $request) }}"
+                        class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 text-sm font-black text-white transition hover:bg-primary-700"
+                    >
+                        دانلود Excel
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.8"
+                            stroke="currentColor"
+                            class="size-5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 3v11m0 0 4-4m-4 4-4-4M5 21h14"
+                            />
+                        </svg>
                     </a>
 
                 </div>
@@ -84,11 +113,11 @@
             <div class="mb-6">
 
                 <h3 class="text-lg font-black text-slate-950">
-                    اطلاعات مشتری
+                    اطلاعات متقاضی
                 </h3>
 
                 <p class="mt-1 text-sm text-slate-500">
-                    اطلاعاتی که هنگام ثبت درخواست ذخیره شده است.
+                    اطلاعات هویتی و تماس ثبت‌شده برای این درخواست.
                 </p>
 
             </div>
@@ -96,17 +125,86 @@
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
+                {{-- Full name --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
+
                     <p class="text-xs font-bold text-slate-400">
                         نام و نام خانوادگی
                     </p>
 
                     <p class="mt-2 break-words text-sm font-black text-slate-900">
-                        {{ $request->full_name ?: ($request->user?->name ?? 'بدون نام') }}
+                        {{ $request->full_name ?: ($request->user?->name ?? 'ثبت نشده') }}
                     </p>
+
                 </div>
 
 
+                {{-- Father name --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        نام پدر
+                    </p>
+
+                    <p class="mt-2 break-words text-sm font-black text-slate-900">
+                        {{ $request->father_name ?: 'ثبت نشده' }}
+                    </p>
+
+                </div>
+
+
+                {{-- National code --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        کد ملی
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $request->national_code }}
+                    </p>
+
+                </div>
+
+
+                {{-- Birth certificate --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        شماره شناسنامه
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $request->birth_certificate_number ?: 'ثبت نشده' }}
+                    </p>
+
+                </div>
+
+
+                {{-- Birth date --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        تاریخ تولد
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $request->birth_date ?: 'ثبت نشده' }}
+                    </p>
+
+                </div>
+
+
+                {{-- Mobile --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -123,17 +221,18 @@
                 </div>
 
 
+                {{-- Landline --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
-                        کد ملی
+                        شماره ثابت
                     </p>
 
                     <p
                         dir="ltr"
                         class="mt-2 text-sm font-black text-slate-900"
                     >
-                        {{ $request->national_code }}
+                        {{ $request->landline ?: 'ثبت نشده' }}
                     </p>
 
                 </div>
@@ -151,10 +250,6 @@
                 <h3 class="text-lg font-black text-slate-950">
                     آدرس نصب
                 </h3>
-
-                <p class="mt-1 text-sm text-slate-500">
-                    محل دریافت سرویس فیبر نوری.
-                </p>
 
             </div>
 
@@ -193,7 +288,7 @@
                         آدرس کامل
                     </p>
 
-                    <p class="mt-2 break-words text-sm leading-7 text-slate-800">
+                    <p class="mt-2 break-words text-sm leading-8 text-slate-800">
                         {{ $request->address }}
                     </p>
 
@@ -230,7 +325,7 @@
                 </h3>
 
                 <p class="mt-1 text-sm text-slate-500">
-                    تعرفه، مودم و مبلغ نهایی ثبت‌شده برای این درخواست.
+                    جزئیات تعرفه و وضعیت مودم این درخواست.
                 </p>
 
             </div>
@@ -241,29 +336,23 @@
                 {{-- Tariff --}}
                 <div class="rounded-2xl border border-slate-200 p-5">
 
-                    <div class="flex items-start justify-between gap-4">
+                    <p class="text-xs font-bold text-slate-400">
+                        تعرفه
+                    </p>
 
-                        <div class="min-w-0">
+                    <p class="mt-2 break-words text-base font-black text-slate-900">
+                        {{ $request->tariff?->name ?? 'بدون تعرفه' }}
+                    </p>
 
-                            <p class="text-xs font-bold text-slate-400">
-                                تعرفه
-                            </p>
+                    @if ($request->tariff?->speed_mbps)
 
-                            <p class="mt-2 break-words text-base font-black text-slate-900">
-                                {{ $request->tariff?->name ?? 'بدون تعرفه' }}
-                            </p>
+                        <p class="mt-2 text-xs text-primary-600">
+                            سرعت
+                            {{ number_format($request->tariff->speed_mbps) }}
+                            Mbps
+                        </p>
 
-                        </div>
-
-                        @if ($request->tariff?->speed_mbps)
-
-                            <span class="shrink-0 rounded-xl bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700">
-                                {{ number_format($request->tariff->speed_mbps) }} Mbps
-                            </span>
-
-                        @endif
-
-                    </div>
+                    @endif
 
                     <p class="mt-4 text-sm text-slate-500">
                         مبلغ تعرفه:
@@ -284,7 +373,7 @@
                     </p>
 
                     <p class="mt-2 break-words text-base font-black text-slate-900">
-                        {{ $request->modem?->name ?? 'بدون مودم' }}
+                        {{ $request->modem?->name ?? 'مودم شخصی' }}
                     </p>
 
                     <p class="mt-4 text-sm text-slate-500">
@@ -300,6 +389,7 @@
             </div>
 
 
+            {{-- Total --}}
             <div class="mt-5 rounded-2xl bg-slate-950 p-5 text-white">
 
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -330,7 +420,7 @@
                     <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
                         <h3 class="text-sm font-black text-slate-900">
-                            توضیح مشتری
+                            توضیحات مشتری
                         </h3>
 
                         <p class="mt-3 break-words text-sm leading-7 text-slate-600">
@@ -405,7 +495,6 @@
                                             cy="12"
                                             r="8.5"
                                         />
-
                                         <path
                                             stroke-linecap="round"
                                             d="M12 7v5l3 2"
@@ -429,7 +518,7 @@
                                             </span>
 
                                             <span class="text-slate-300">
-                                                ←
+                                                →
                                             </span>
 
                                         @endif
@@ -504,12 +593,13 @@
                 </h3>
 
                 <p class="mt-1 text-sm text-slate-500">
-                    وضعیت درخواست و یادداشت مدیریتی را به‌روزرسانی کنید.
+                    وضعیت درخواست را تغییر دهید یا پس از دانلود فایل، آن را تکمیل و حذف کنید.
                 </p>
 
             </div>
 
 
+            {{-- Status form --}}
             <form
                 method="POST"
                 action="{{ route('admin.requests.status', $request) }}"
@@ -529,7 +619,7 @@
                             for="status"
                             class="block text-sm font-bold text-slate-800"
                         >
-                            وضعیت جدید
+                            وضعیت
                         </label>
 
                         <select
@@ -545,7 +635,7 @@
                                     value="{{ $value }}"
                                     @selected(old('status', $request->status) === $value)
                                 >
-                                {{ $label }}
+                                    {{ $label }}
                                 </option>
 
                             @endforeach
@@ -577,7 +667,7 @@
                             rows="3"
                             maxlength="5000"
                             class="block w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
-                            placeholder="در صورت نیاز توضیح تغییر وضعیت را وارد کنید..."
+                            placeholder="در صورت نیاز توضیح وارد کنید..."
                         >{{ old('note') }}</textarea>
 
                         @error('note')
@@ -593,16 +683,9 @@
 
                 <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
-                    <a
-                        href="{{ route('admin.requests.index') }}"
-                        class="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 px-5 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
-                    >
-                        انصراف
-                    </a>
-
-                    <x-button
+                    <button
                         type="submit"
-                        size="lg"
+                        class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 text-sm font-black text-white transition hover:bg-primary-700"
                     >
                         ذخیره وضعیت
 
@@ -621,13 +704,88 @@
                             />
                         </svg>
 
-                    </x-button>
+                    </button>
 
                 </div>
 
             </form>
 
+
+            {{-- Complete/Delete --}}
+            <div class="mt-6 border-t border-slate-100 pt-6">
+
+                <div class="rounded-2xl border border-red-200 bg-red-50 p-4">
+
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+                        <div class="min-w-0">
+
+                            <p class="text-sm font-black text-red-900">
+                                تکمیل و حذف درخواست
+                            </p>
+
+                            <p class="mt-1 text-xs leading-6 text-red-700">
+                                مطمئن شوید فایل Excel را دانلود کرده‌اید.
+                                پس از تأیید، اطلاعات این درخواست و تاریخچه آن از سیستم حذف می‌شود.
+                            </p>
+
+                        </div>
+
+
+                        <form
+                            method="POST"
+                            action="{{ route('admin.requests.complete', $request) }}"
+                            onsubmit="return confirmCompleteRequest();"
+                            class="shrink-0"
+                        >
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button
+                                type="submit"
+                                class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-5 text-sm font-black text-white transition hover:bg-red-700 lg:w-auto"
+                            >
+                                تکمیل درخواست
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    class="size-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12.5 9.5 17 19 7.5"
+                                    />
+                                </svg>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </section>
 
     </div>
+
+
+    <script>
+        function confirmCompleteRequest() {
+            return confirm(
+                'آیا مطمئن هستید؟\n\n' +
+                'با تکمیل این درخواست، اطلاعات درخواست و تاریخچه آن از سیستم حذف خواهد شد.\n\n' +
+                'در صورتی که Excel را دانلود کرده‌اید و مطمئن هستید، تأیید کنید.'
+            );
+        }
+    </script>
+
 </x-layouts.admin>

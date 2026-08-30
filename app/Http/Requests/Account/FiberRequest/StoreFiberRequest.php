@@ -21,15 +21,39 @@ class StoreFiberRequest extends FormRequest
                 'max:150',
             ],
 
+            'father_name' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
             'national_code' => [
                 'required',
                 'digits:10',
+            ],
+
+            'birth_certificate_number' => [
+                'required',
+                'string',
+                'max:30',
+            ],
+
+            'birth_date' => [
+                'required',
+                'string',
+                'max:10',
             ],
 
             'mobile' => [
                 'required',
                 'string',
                 'regex:/^09\d{9}$/',
+            ],
+
+            'landline' => [
+                'nullable',
+                'string',
+                'max:20',
             ],
 
             'tariff_id' => [
@@ -81,11 +105,20 @@ class StoreFiberRequest extends FormRequest
             'full_name.required' =>
                 'نام و نام خانوادگی الزامی است.',
 
+            'father_name.required' =>
+                'نام پدر الزامی است.',
+
             'national_code.required' =>
                 'کد ملی الزامی است.',
 
             'national_code.digits' =>
                 'کد ملی باید ۱۰ رقم باشد.',
+
+            'birth_certificate_number.required' =>
+                'شماره شناسنامه الزامی است.',
+
+            'birth_date.required' =>
+                'تاریخ تولد الزامی است.',
 
             'mobile.required' =>
                 'شماره موبایل الزامی است.',

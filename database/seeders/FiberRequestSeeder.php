@@ -44,7 +44,7 @@ class FiberRequestSeeder extends Seeder
                 ? $modems[$index % $modems->count()]
                 : null;
 
-            $modemPrice = $modem?->price ?? 0;
+            $modemPrice = (int) ($modem?->price ?? 0);
 
             $createdAt = now()->subDays(5 - $index);
 
@@ -56,18 +56,47 @@ class FiberRequestSeeder extends Seeder
                 'modem_id' => $modem?->id,
 
                 'tracking_code' => 'FBR-' . now()->format('Ymd') . '-' . str_pad(
-                        (string) ($index + 1),
-                        4,
-                        '0',
-                        STR_PAD_LEFT
-                    ),
+                    (string) ($index + 1),
+                    4,
+                    '0',
+                    STR_PAD_LEFT
+                ),
 
+                // Customer identity
                 'full_name' => $customer->name ?? 'کاربر تست',
+
+                'father_name' => match ($index) {
+                    0 => 'محمد',
+                    1 => 'علی',
+                    2 => 'حسن',
+                    3 => 'رضا',
+                    default => 'محمود',
+                },
 
                 'national_code' => '001234567' . ($index + 1),
 
+                'birth_certificate_number' => (string) (1234 + $index),
+
+                'birth_date' => match ($index) {
+                    0 => '1375/02/15',
+                    1 => '1378/07/21',
+                    2 => '1372/11/08',
+                    3 => '1369/04/17',
+                    default => '1380/01/12',
+                },
+
+                // Contact
                 'mobile' => $customer->mobile,
 
+                'landline' => match ($index) {
+                    0 => '02112345678',
+                    1 => '02122334455',
+                    2 => null,
+                    3 => '02133445566',
+                    default => '02144556677',
+                },
+
+                // Address
                 'province' => 'تهران',
 
                 'city' => 'تهران',
@@ -76,14 +105,17 @@ class FiberRequestSeeder extends Seeder
 
                 'postal_code' => '123456789' . ($index + 1),
 
-                'tariff_price' => $tariff->price,
+                // Price snapshot
+                'tariff_price' => (int) $tariff->price,
 
                 'modem_price' => $modemPrice,
 
-                'total_price' => $tariff->price + $modemPrice,
+                'total_price' => (int) $tariff->price + $modemPrice,
 
+                // Status
                 'status' => $status,
 
+                // Notes
                 'admin_note' => match ($status) {
                     'reviewing' => 'درخواست در حال بررسی توسط واحد پشتیبانی است.',
                     'approved' => 'درخواست مورد تأیید قرار گرفت.',

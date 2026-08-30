@@ -23,6 +23,10 @@
         $currentStatusLabel =
             $statusLabels[$fiberRequest->status]
             ?? $fiberRequest->status;
+
+        $currentStatusClass =
+            $statusClasses[$fiberRequest->status]
+            ?? 'border-slate-200 bg-slate-50 text-slate-600';
     @endphp
 
 
@@ -41,7 +45,7 @@
                     <div class="flex flex-wrap items-center gap-2">
 
                         <span
-                            class="inline-flex rounded-full border px-3 py-1.5 text-xs font-black {{ $statusClasses[$fiberRequest->status] ?? 'border-slate-200 bg-slate-50 text-slate-600' }}"
+                            class="inline-flex rounded-full border px-3 py-1.5 text-xs font-black {{ $currentStatusClass }}"
                         >
                             {{ $currentStatusLabel }}
                         </span>
@@ -57,7 +61,7 @@
                     </h2>
 
                     <p class="mt-2 text-sm text-slate-500">
-                        ثبت‌شده در
+                        ثبت شده در
                         {{ $fiberRequest->created_at?->format('Y/m/d - H:i') }}
                     </p>
 
@@ -92,7 +96,7 @@
             </div>
 
 
-            <div class="rounded-2xl border p-5 {{ $statusClasses[$fiberRequest->status] ?? 'border-slate-200 bg-slate-50 text-slate-700' }}">
+            <div class="rounded-2xl border p-5 {{ $currentStatusClass }}">
 
                 <div class="flex items-center justify-between gap-4">
 
@@ -200,6 +204,7 @@
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 
+                {{-- Full name --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -213,6 +218,72 @@
                 </div>
 
 
+                {{-- Father name --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        نام پدر
+                    </p>
+
+                    <p class="mt-2 break-words text-sm font-black text-slate-900">
+                        {{ $fiberRequest->father_name }}
+                    </p>
+
+                </div>
+
+
+                {{-- National code --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        کد ملی
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $fiberRequest->national_code }}
+                    </p>
+
+                </div>
+
+
+                {{-- Birth certificate --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        شماره شناسنامه
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $fiberRequest->birth_certificate_number }}
+                    </p>
+
+                </div>
+
+
+                {{-- Birth date --}}
+                <div class="rounded-2xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-bold text-slate-400">
+                        تاریخ تولد
+                    </p>
+
+                    <p
+                        dir="ltr"
+                        class="mt-2 text-sm font-black text-slate-900"
+                    >
+                        {{ $fiberRequest->birth_date }}
+                    </p>
+
+                </div>
+
+
+                {{-- Mobile --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -229,17 +300,18 @@
                 </div>
 
 
+                {{-- Landline --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
-                        کد ملی
+                        شماره ثابت
                     </p>
 
                     <p
                         dir="ltr"
                         class="mt-2 text-sm font-black text-slate-900"
                     >
-                        {{ $fiberRequest->national_code }}
+                        {{ $fiberRequest->landline ?: 'ثبت نشده' }}
                     </p>
 
                 </div>
@@ -263,6 +335,7 @@
 
             <div class="grid gap-4 sm:grid-cols-2">
 
+                {{-- Province --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -276,6 +349,7 @@
                 </div>
 
 
+                {{-- City --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -289,6 +363,7 @@
                 </div>
 
 
+                {{-- Address --}}
                 <div class="rounded-2xl bg-slate-50 p-4 sm:col-span-2">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -302,6 +377,7 @@
                 </div>
 
 
+                {{-- Postal code --}}
                 <div class="rounded-2xl bg-slate-50 p-4">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -322,7 +398,7 @@
         </section>
 
 
-        {{-- Products --}}
+        {{-- Services --}}
         <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
             <div class="mb-6">
@@ -336,6 +412,7 @@
 
             <div class="grid gap-4 sm:grid-cols-2">
 
+                {{-- Tariff --}}
                 <div class="rounded-2xl border border-slate-200 p-5">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -364,6 +441,7 @@
                 </div>
 
 
+                {{-- Modem --}}
                 <div class="rounded-2xl border border-slate-200 p-5">
 
                     <p class="text-xs font-bold text-slate-400">
@@ -371,7 +449,7 @@
                     </p>
 
                     <p class="mt-2 break-words text-base font-black text-slate-900">
-                        {{ $fiberRequest->modem?->name ?? 'بدون مودم' }}
+                        {{ $fiberRequest->modem?->name ?? 'مودم شخصی' }}
                     </p>
 
                     <p class="mt-3 text-sm text-slate-500">
@@ -384,6 +462,7 @@
             </div>
 
 
+            {{-- Total --}}
             <div class="mt-5 rounded-2xl bg-slate-950 p-5 text-white">
 
                 <div class="flex items-center justify-between gap-4">
@@ -414,7 +493,7 @@
                     <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
                         <h3 class="text-sm font-black text-slate-900">
-                            توضیح شما
+                            توضیحات شما
                         </h3>
 
                         <p class="mt-3 break-words text-sm leading-8 text-slate-600">
@@ -431,7 +510,7 @@
                     <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
                         <h3 class="text-sm font-black text-slate-900">
-                            توضیح کارشناس
+                            توضیحات کارشناس
                         </h3>
 
                         <p class="mt-3 break-words text-sm leading-8 text-slate-600">
@@ -474,6 +553,7 @@
                             <div class="flex shrink-0 flex-col items-center">
 
                                 <span class="grid size-10 place-items-center rounded-xl bg-slate-100 text-slate-500">
+
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -485,6 +565,7 @@
                                         <circle cx="12" cy="12" r="8.5"/>
                                         <path stroke-linecap="round" d="M12 7v5l3 2"/>
                                     </svg>
+
                                 </span>
 
                             </div>
@@ -503,7 +584,7 @@
                                             </span>
 
                                             <span class="text-slate-300">
-                                                ←
+                                                →
                                             </span>
 
                                         @endif
@@ -565,6 +646,7 @@
             >
                 بازگشت
             </a>
+
 
             @if ($fiberRequest->status === 'pending')
 

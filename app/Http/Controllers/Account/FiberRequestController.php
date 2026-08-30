@@ -10,6 +10,7 @@ use App\Models\Tariff;
 use App\Services\FiberRequestService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class FiberRequestController extends Controller
@@ -47,18 +48,9 @@ class FiberRequestController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $modems = Modem::query()
-            ->where('is_active', true)
-            ->where('stock', '>', 0)
-            ->orderBy('sort_order')
-            ->get();
-
         return view(
             'account.requests.create',
-            compact(
-                'tariffs',
-                'modems'
-            )
+            compact('tariffs')
         );
     }
 
@@ -91,24 +83,25 @@ class FiberRequestController extends Controller
         );
 
         /*
-         * Only active tariffs.
+         * Only pending requests can be edited.
+         */
+        if (!$fiberRequest->isPending()) {
+            return redirect()
+                ->route(
+                    'account.requests.show',
+                    $fiberRequest
+                )
+                ->with(
+                    'error',
+                    'این درخواست دیگر قابل ویرایش نیست.'
+                );
+        }
+
+        /*
+         * Active tariffs only.
          */
         $tariffs = Tariff::query()
             ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
-
-        /*
-         * Keep the currently selected modem visible,
-         * even if it is no longer in stock.
-         */
-        $modems = Modem::query()
-            ->where('is_active', true)
-            ->where(function ($query) use ($fiberRequest) {
-                $query
-                    ->where('stock', '>', 0)
-                    ->orWhere('id', $fiberRequest->modem_id);
-            })
             ->orderBy('sort_order')
             ->get();
 
@@ -122,7 +115,6 @@ class FiberRequestController extends Controller
             [
                 'request' => $fiberRequest,
                 'tariffs' => $tariffs,
-                'modems' => $modems,
             ]
         );
     }
@@ -137,16 +129,9 @@ class FiberRequestController extends Controller
         );
 
         /*
-         * Editing a request after it has entered review
-         * should not be allowed.
+         * Only pending requests can be edited.
          */
-        if (
-            !in_array(
-                $fiberRequest->status,
-                ['pending'],
-                true
-            )
-        ) {
+        if (!$fiberRequest->isPending()) {
             return back()->with(
                 'error',
                 'این درخواست دیگر قابل ویرایش نیست.'
@@ -154,13 +139,16 @@ class FiberRequestController extends Controller
         }
 
         /*
-         * Temporary validation.
-         *
-         * Later we can move this to a dedicated
-         * UpdateFiberRequestRequest.
+         * Validate request data.
          */
         $validated = $request->validate([
             'full_name' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
+            'father_name' => [
                 'required',
                 'string',
                 'max:150',
@@ -171,10 +159,28 @@ class FiberRequestController extends Controller
                 'digits:10',
             ],
 
+            'birth_certificate_number' => [
+                'required',
+                'string',
+                'max:30',
+            ],
+
+            'birth_date' => [
+                'required',
+                'string',
+                'max:10',
+            ],
+
             'mobile' => [
                 'required',
                 'string',
                 'regex:/^09\d{9}$/',
+            ],
+
+            'landline' => [
+                'nullable',
+                'string',
+                'max:20',
             ],
 
             'tariff_id' => [
@@ -183,10 +189,9 @@ class FiberRequestController extends Controller
                 'exists:tariffs,id',
             ],
 
-            'modem_id' => [
+            'has_modem' => [
                 'nullable',
-                'integer',
-                'exists:modems,id',
+                'boolean',
             ],
 
             'province' => [
@@ -219,75 +224,128 @@ class FiberRequestController extends Controller
             ],
         ]);
 
+        /*
+         * Normalize checkbox.
+         */
+        $hasModem = $request->boolean('has_modem');
+
+        /*
+         * Get active tariff.
+         */
         $tariff = Tariff::query()
             ->where('is_active', true)
             ->findOrFail($validated['tariff_id']);
 
-        $newModem = null;
-
-        if (!empty($validated['modem_id'])) {
-            $newModem = Modem::query()
-                ->where('is_active', true)
-                ->findOrFail($validated['modem_id']);
-        }
-
-        /*
-         * Current and new modem IDs.
-         */
-        $oldModemId = $fiberRequest->modem_id;
-        $newModemId = $newModem?->id;
-
-        /*
-         * Change stock safely.
-         */
-        if ($oldModemId !== $newModemId) {
+        DB::transaction(function () use (
+            $fiberRequest,
+            $validated,
+            $hasModem,
+            $tariff
+        ) {
+            $oldModemId = $fiberRequest->modem_id;
 
             /*
-             * New modem needs stock.
+             * Customer already has a modem.
+             *
+             * If the request previously had an assigned modem,
+             * return it to stock.
              */
-            if ($newModem) {
-                if (!$newModem->hasStock()) {
-                    return back()
-                        ->withErrors([
-                            'modem_id' => 'مودم انتخاب‌شده موجود نیست.',
-                        ])
-                        ->withInput();
+            if ($hasModem) {
+
+                if ($oldModemId) {
+                    Modem::query()
+                        ->whereKey($oldModemId)
+                        ->lockForUpdate()
+                        ->increment('stock');
                 }
 
-                $newModem->decrement('stock');
+                $modemId = null;
+                $modemPrice = 0;
             }
 
             /*
-             * Return previous modem to stock.
+             * Customer needs a modem.
              */
-            if ($oldModemId) {
-                Modem::query()
-                    ->whereKey($oldModemId)
-                    ->increment('stock');
+            else {
+
+                /*
+                 * Keep existing modem if the request already has one.
+                 */
+                if ($oldModemId) {
+                    $modem = Modem::query()
+                        ->whereKey($oldModemId)
+                        ->where('is_active', true)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if ($modem) {
+                        $modemId = $modem->id;
+                        $modemPrice = (int) $modem->price;
+                    } else {
+                        $modemId = null;
+                        $modemPrice = 0;
+                    }
+                }
+
+                /*
+                 * Assign a new modem if needed.
+                 */
+                else {
+                    $modem = Modem::query()
+                        ->where('is_active', true)
+                        ->where('stock', '>', 0)
+                        ->orderBy('sort_order')
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$modem) {
+                        abort(
+                            422,
+                            'در حال حاضر مودم موجود نیست.'
+                        );
+                    }
+
+                    $modem->decrement('stock');
+
+                    $modemId = $modem->id;
+                    $modemPrice = (int) $modem->price;
+                }
             }
-        }
 
-        $modemPrice = $newModem?->price ?? 0;
+            /*
+             * Price snapshot.
+             */
+            $tariffPrice = (int) $tariff->price;
+            $totalPrice = $tariffPrice + $modemPrice;
 
-        $fiberRequest->update([
-            'tariff_id' => $tariff->id,
-            'modem_id' => $newModemId,
+            /*
+             * Update request.
+             */
+            $fiberRequest->update([
+                'tariff_id' => $tariff->id,
+                'modem_id' => $modemId,
 
-            'full_name' => $validated['full_name'],
-            'national_code' => $validated['national_code'],
-            'mobile' => $validated['mobile'],
+                'full_name' => $validated['full_name'],
+                'father_name' => $validated['father_name'],
+                'national_code' => $validated['national_code'],
+                'birth_certificate_number' => $validated['birth_certificate_number'],
+                'birth_date' => $validated['birth_date'],
 
-            'province' => $validated['province'],
-            'city' => $validated['city'],
-            'address' => $validated['address'],
-            'postal_code' => $validated['postal_code'],
+                'mobile' => $validated['mobile'],
+                'landline' => $validated['landline'] ?? null,
 
-            'tariff_price' => $tariff->price,
-            'modem_price' => $modemPrice,
-            'total_price' => $tariff->price + $modemPrice,
+                'province' => $validated['province'],
+                'city' => $validated['city'],
+                'address' => $validated['address'],
+                'postal_code' => $validated['postal_code'],
 
-            'customer_note' => $validated['customer_note'] ?? null,
-        ]);
+                'tariff_price' => $tariffPrice,
+                'modem_price' => $modemPrice,
+                'total_price' => $totalPrice,
+
+                'customer_note' => $validated['customer_note'] ?? null,
+            ]);
+        });
 
         return redirect()
             ->route(

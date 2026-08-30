@@ -29,10 +29,16 @@ return new class extends Migration
             // Request identification
             $table->string('tracking_code', 30)->unique();
 
-            // Customer information snapshot
+            // Customer identity snapshot
             $table->string('full_name', 150);
+            $table->string('father_name', 150);
             $table->string('national_code', 10);
+            $table->string('birth_certificate_number', 30);
+            $table->string('birth_date', 10);
+
+            // Contact
             $table->string('mobile', 20);
+            $table->string('landline', 20)->nullable();
 
             // Address
             $table->string('province', 100);
