@@ -2,23 +2,20 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-//    'kavenegar' => [
-//        'api_key' => env('KAVENEGAR_API_KEY'),
-//        'sender' => env('KAVENEGAR_SENDER'),
-//        'otp_template' => env('KAVENEGAR_OTP_TEMPLATE'),
-//        'secretary_mobile' => env('KAVENEGAR_SECRETARY_MOBILE'),
-//    ],
+    'behinpayam' => [
+        'url' => env(
+            'BEHINPAYAM_URL',
+            'https://api.sms-webservice.com/api/V3/Send'
+        ),
+
+        'api_key' => env('BEHINPAYAM_API_KEY'),
+
+        'sender' => env(
+            'BEHINPAYAM_SENDER',
+            '9998624173'
+        ),
+    ],
+
     'sms' => [
         'secretary_mobile' => env('SMS_SECRETARY_MOBILE'),
     ],
@@ -39,8 +36,13 @@ return [
 
     'slack' => [
         'notifications' => [
-            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
-            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+            'bot_user_oauth_token' => env(
+                'SLACK_BOT_USER_OAUTH_TOKEN'
+            ),
+
+            'channel' => env(
+                'SLACK_BOT_USER_DEFAULT_CHANNEL'
+            ),
         ],
     ],
 

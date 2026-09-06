@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\FiberRequestCreated;
 use App\Services\SmsService;
+use Illuminate\Support\Facades\Log;
 
 class SendFiberRequestCreatedSms
 {
@@ -19,29 +20,43 @@ class SendFiberRequestCreatedSms
         /*
          * Customer SMS
          */
-        $customerMessage = sprintf(
-            "درخواست شما با موفقیت ثبت شد.\nکد پیگیری: %s",
-            $fiberRequest->tracking_code
-        );
+        try {
+            $customerMessage = sprintf(
+                "درخواست شما در سیستم ثبت شد.\nکد پیگیری: %s\nلطفاً منتظر بررسی اپراتورهای ما باشید.",
+                $fiberRequest->tracking_code
+            );
 
-        $this->smsService->send(
-            $fiberRequest->mobile,
-            $customerMessage
-        );
-
+            $this->smsService->send(
+                $fiberRequest->mobile,
+                $customerMessage
+            );
+        } catch (\Throwable $e) {
+            Log::error('Failed to send fiber request SMS to customer', [
+                'fiber_request_id' => $fiberRequest->id,
+                'mobile' => $fiberRequest->mobile,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         /*
          * Secretary SMS
          */
-        $secretaryMessage = sprintf(
-            "درخواست جدید فیبر نوری\nکد پیگیری: %s\nنام: %s\nموبایل: %s",
-            $fiberRequest->tracking_code,
-            $fiberRequest->full_name,
-            $fiberRequest->mobile
-        );
+        try {
+            $secretaryMessage = sprintf(
+                "درخواست جدید فیبر نوری\nنام: %s\nموبایل: %s\nکد پیگیری: %s",
+                $fiberRequest->full_name,
+                $fiberRequest->mobile,
+                $fiberRequest->tracking_code
+            );
 
-        $this->smsService->sendToSecretary(
-            $secretaryMessage
-        );
+            $this->smsService->sendToSecretary(
+                $secretaryMessage
+            );
+        } catch (\Throwable $e) {
+            Log::error('Failed to send fiber request SMS to secretary', [
+                'fiber_request_id' => $fiberRequest->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

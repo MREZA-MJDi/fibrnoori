@@ -11,7 +11,7 @@ class UserSeeder extends Seeder
     {
         User::updateOrCreate(
             [
-                'mobile' => '09120000001',
+                'mobile' => '09128831544',
             ],
             [
                 'name' => 'مدیر سیستم',
