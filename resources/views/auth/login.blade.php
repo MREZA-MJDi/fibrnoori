@@ -1,200 +1,249 @@
 <x-layouts.auth
-    title="ورود | فیبر نوری"
+    title="ثبت نام فیبر نوری | مخابرات"
 >
-    <main class="min-h-screen bg-slate-50">
 
-        <div class="mx-auto flex min-h-screen w-full max-w-[1440px] flex-col lg:flex-row">
+    <main
+        dir="rtl"
+        class="
+            relative
+            min-h-screen
+            overflow-hidden
+            bg-slate-950
+        "
+    >
 
-            {{-- =====================================================
-                 Visual
-            ====================================================== --}}
-            <section
+        {{-- =====================================================
+             BACKGROUND
+        ====================================================== --}}
+
+        <div class="pointer-events-none absolute inset-0">
+
+            {{-- Base --}}
+            <div class="absolute inset-0 bg-slate-950"></div>
+
+
+            {{-- Telecom logo watermark --}}
+            <div
                 class="
-                    relative overflow-hidden
-                    bg-slate-950 text-white
+                    absolute
+                    left-1/2
+                    top-1/2
+                    -translate-x-1/2
+                    -translate-y-1/2
 
-                    min-h-[260px]
-                    w-full
+                    w-[380px]
+                    sm:w-[500px]
+                    md:w-[650px]
+                    lg:w-[780px]
+                    xl:w-[900px]
 
-                    sm:min-h-[320px]
-
-                    lg:min-h-screen
-                    lg:w-1/2
-                    lg:items-center
-                    lg:justify-center
-                    lg:flex
+                    opacity-[0.045]
+                    select-none
                 "
             >
-                <div class="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-primary-600/20 blur-3xl sm:size-96"></div>
-
-                <div class="pointer-events-none absolute -bottom-32 right-1/4 size-80 rounded-full bg-blue-500/10 blur-3xl sm:size-[28rem]"></div>
-
-
-                <div
+                <img
+                    src="{{ asset('images/tci-logo.png') }}"
+                    alt=""
                     class="
-                        relative z-10 mx-auto w-full max-w-xl
-                        px-5 py-8
-                        sm:px-8 sm:py-10
-                        lg:px-12 lg:py-16
-                        xl:px-16
+                        block
+                        h-auto
+                        w-full
+                        object-contain
+                    "
+                >
+            </div>
+
+
+            {{-- Dark overlay --}}
+            <div
+                class="
+                    absolute
+                    inset-0
+                    bg-slate-950/60
+                "
+            ></div>
+
+
+            {{-- Primary glow --}}
+            <div
+                class="
+                    absolute
+                    -right-40
+                    -top-40
+                    size-[520px]
+                    rounded-full
+                    bg-primary-600/20
+                    blur-[120px]
+                "
+            ></div>
+
+
+            {{-- Blue glow --}}
+            <div
+                class="
+                    absolute
+                    -bottom-48
+                    -left-48
+                    size-[600px]
+                    rounded-full
+                    bg-blue-500/10
+                    blur-[140px]
+                "
+            ></div>
+
+
+            {{-- Grid --}}
+            <div
+                class="
+                    absolute
+                    inset-0
+                    opacity-[0.025]
+                "
+                style="
+                    background-image:
+                        linear-gradient(
+                            rgba(255,255,255,.8) 1px,
+                            transparent 1px
+                        ),
+                        linear-gradient(
+                            90deg,
+                            rgba(255,255,255,.8) 1px,
+                            transparent 1px
+                        );
+                    background-size: 48px 48px;
+                "
+            ></div>
+
+        </div>
+
+
+        {{-- =====================================================
+             MAIN CONTENT
+        ====================================================== --}}
+
+        <div
+            class="
+                relative
+                z-10
+                mx-auto
+                flex
+                min-h-screen
+                w-full
+                max-w-7xl
+                items-center
+                px-4
+                py-8
+
+                sm:px-6
+                sm:py-10
+
+                lg:px-8
+                lg:py-12
+            "
+        >
+
+            <div
+                class="
+                    grid
+                    w-full
+                    grid-cols-1
+                    items-center
+                    gap-8
+
+                    lg:grid-cols-[1.08fr_.92fr]
+                    lg:gap-14
+
+                    xl:gap-20
+                "
+            >
+
+                {{-- =================================================
+                     HERO
+                ================================================== --}}
+
+                <section
+                    class="
+                        flex
+                        flex-col
+                        justify-center
+                        text-white
+
+                        lg:min-h-[640px]
                     "
                 >
 
-                    {{-- Brand --}}
-                    <a
-                        href="{{ route('home') }}"
-                        class="inline-flex items-center gap-3"
+                    {{-- =================================================
+                         BRAND
+                    ================================================== --}}
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-4
+                        "
                     >
-                        <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary-600 text-white shadow-lg shadow-primary-950/30 sm:size-12">
 
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.8"
-                                stroke="currentColor"
-                                class="size-5 sm:size-6"
+                        <div
+                            class="
+                                grid
+                                size-14
+                                shrink-0
+                                place-items-center
+
+                                rounded-2xl
+
+                                border
+                                border-white/10
+
+                                bg-white/5
+
+                                shadow-2xl
+                                shadow-black/20
+
+                                backdrop-blur-xl
+
+                                sm:size-16
+                            "
+                        >
+
+                            <img
+                                src="{{ asset('images/tci-logo.png') }}"
+                                alt="شرکت مخابرات ایران"
+                                class="
+                                    size-9
+                                    object-contain
+
+                                    sm:size-10
+                                "
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M4 8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 15.5z"
-                                />
 
-                                <path
-                                    stroke-linecap="round"
-                                    d="M8 12h.01M12 12h.01M16 12h.01"
-                                />
-                            </svg>
-
-                        </span>
-
-                        <span>
-                            <span class="block text-sm font-black sm:text-base">
-                                فیبر نوری
-                            </span>
-
-                            <span class="mt-0.5 block text-[11px] text-slate-400">
-                                اینترنت پرسرعت
-                            </span>
-                        </span>
-                    </a>
+                        </div>
 
 
-                    {{-- Visual content --}}
-                    <div class="mt-8 sm:mt-10 lg:mt-16">
+                        <div>
 
-                        <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-bold text-slate-300">
-                            <span class="size-2 rounded-full bg-primary-400"></span>
-                            اتصال سریع و پایدار
-                        </span>
+                            <div
+                                class="
+                                    text-sm
+                                    font-black
+                                    text-white
 
-                        <h2 class="mt-4 max-w-xl text-2xl font-black leading-[1.4] tracking-tight sm:text-3xl lg:text-4xl xl:text-5xl">
-                            اینترنت فیبر نوری،
-                            <span class="text-primary-400">
-                                ساده‌تر از همیشه
-                            </span>
-                        </h2>
+                                    sm:text-base
+                                "
+                            >
+                             فیبر نوری مخابرات ایران
+                            </div>
 
-                        <p class="mt-4 max-w-xl text-xs leading-7 text-slate-400 sm:text-sm sm:leading-8 lg:text-base">
-                            تعرفه مناسب خود را انتخاب کنید، درخواست اتصال را ثبت کنید و
-                            وضعیت درخواست خود را از پنل کاربری پیگیری کنید.
-                        </p>
+                            <div
+                                class="
+                                    mt-1
+                                    text-[11px]
+                                    text-slate-400
 
-
-                        {{-- Desktop / Tablet visual --}}
-                        <div class="mt-8 sm:mt-10 lg:mt-12">
-
-                            <div class="grid grid-cols-3 gap-2 sm:gap-3">
-
-                                <div class="rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                                    <span class="grid size-9 place-items-center rounded-xl bg-primary-500/10 text-primary-300 sm:size-10">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.8"
-                                            stroke="currentColor"
-                                            class="size-4 sm:size-5"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="m13 3-9 11h7l-1 7 9-11h-7z"
-                                            />
-                                        </svg>
-                                    </span>
-
-                                    <p class="mt-3 text-[11px] font-black text-white sm:text-xs">
-                                        سرعت بالا
-                                    </p>
-
-                                    <p class="mt-1 text-[10px] leading-5 text-slate-500 sm:text-[11px]">
-                                        سرویس پرسرعت
-                                    </p>
-                                </div>
-
-
-                                <div class="rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4">
-                                    <span class="grid size-9 place-items-center rounded-xl bg-white/5 text-slate-300 sm:size-10">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.8"
-                                            stroke="currentColor"
-                                            class="size-4 sm:size-5"
-                                        >
-                                            <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="8.5"
-                                            />
-
-                                            <path
-                                                stroke-linecap="round"
-                                                d="M3.5 12h17M12 3.5c2.2 2.4 3.2 5.2 3.2 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.2-5.2-3.2-8.5S9.8 5.9 12 3.5z"
-                                            />
-                                        </svg>
-                                    </span>
-
-                                    <p class="mt-3 text-[11px] font-black text-white sm:text-xs">
-                                        اتصال پایدار
-                                    </p>
-
-                                    <p class="mt-1 text-[10px] leading-5 text-slate-500 sm:text-[11px]">
-                                        کیفیت مطمئن
-                                    </p>
-                                </div>
-
-
-                                <div class="rounded-2xl border border-primary-400/20 bg-primary-500/10 p-3 sm:p-4">
-                                    <span class="grid size-9 place-items-center rounded-xl bg-primary-400/10 text-primary-300 sm:size-10">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.8"
-                                            stroke="currentColor"
-                                            class="size-4 sm:size-5"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="m5 12 4 4L19 6"
-                                            />
-                                        </svg>
-                                    </span>
-
-                                    <p class="mt-3 text-[11px] font-black text-white sm:text-xs">
-                                        ثبت آنلاین
-                                    </p>
-
-                                    <p class="mt-1 text-[10px] leading-5 text-slate-500 sm:text-[11px]">
-                                        سریع و ساده
-                                    </p>
-                                </div>
-
+                                    sm:text-xs
+                                "
+                            >
                             </div>
 
                         </div>
@@ -202,38 +251,163 @@
                     </div>
 
 
-                    <p class="mt-8 hidden text-xs text-slate-500 lg:block">
-                        © {{ now()->year }} فیبر نوری
+                    {{-- =================================================
+                         BADGE
+                    ================================================== --}}
+
+                    <div class="mt-9 sm:mt-10">
+
+                        <span
+                            class="
+                                inline-flex
+                                items-center
+                                gap-3
+
+                                rounded-full
+
+                                border
+                                border-primary-400/20
+
+                                bg-primary-400/10
+
+                                px-3.5
+                                py-2
+
+                                text-[11px]
+                                font-black
+                                text-primary-300
+
+                                backdrop-blur-md
+                            "
+                        >
+
+                            <span
+                                class="
+                                    size-3
+                                    rounded-full
+                                    bg-primary-400
+                                    shadow-[0_0_12px_rgba(74,222,128,.75)]
+                                "
+                            ></span>
+
+                            ثبت‌نام اینترنت پرسرعت
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- =================================================
+                         TITLE
+                    ================================================== --}}
+
+                    <h1
+                        class="
+                            mt-5
+                            max-w-2xl
+
+                            text-4xl
+                            font-black
+                            leading-[1.45]
+                            tracking-tight
+
+                            sm:text-5xl
+
+                            lg:text-[3.6rem]
+                            lg:leading-[1.4]
+
+                            xl:text-6xl
+                        "
+                    >
+
+                        ثبت نام
+
+                        <span
+                            class="
+                                block
+                                text-primary-400
+                            "
+                        >
+                            فیبر نوری مخابرات
+                        </span>
+
+                    </h1>
+
+
+                    {{-- =================================================
+                         DESCRIPTION
+                    ================================================== --}}
+
+                    <p
+                        class="
+                            mt-5
+                            max-w-xl
+
+                            text-sm
+                            leading-8
+                            text-slate-400
+
+                            sm:text-base
+                            sm:leading-9
+                        "
+                    >
+                        برای دریافت اینترنت فیبر نوری، درخواست خود را
+                        به‌صورت آنلاین ثبت کنید، وضعیت پوشش را بررسی کنید
+                        و مراحل درخواست خود را به‌سادگی پیگیری نمایید.
                     </p>
 
-                </div>
-            </section>
 
+                    {{-- =================================================
+                         FEATURES
+                    ================================================== --}}
 
-            {{-- =====================================================
-                 Form
-            ====================================================== --}}
-            <section
-                class="
-                    flex w-full flex-1 items-center justify-center
-                    bg-white
-                    px-4 py-8
-                    sm:px-8 sm:py-10
-                    lg:w-1/2
-                    lg:px-12 lg:py-16
-                    xl:px-16
-                "
-            >
-                <div class="w-full max-w-md">
+                    <div
+                        class="
+                            mt-8
+                            grid
+                            max-w-2xl
+                            grid-cols-1
+                            gap-3
 
-                    {{-- Mobile brand --}}
-                    <div class="mb-8 lg:hidden">
+                            sm:grid-cols-3
+                        "
+                    >
 
-                        <a
-                            href="{{ route('home') }}"
-                            class="inline-flex items-center gap-3"
+                        {{-- Feature 1 --}}
+                        <div
+                            class="
+                                rounded-2xl
+
+                                border
+                                border-white/10
+
+                                bg-white/5
+
+                                p-4
+
+                                backdrop-blur-xl
+
+                                transition
+                                duration-200
+
+                                hover:border-white/15
+                                hover:bg-white/[0.07]
+                            "
                         >
-                            <span class="grid size-11 place-items-center rounded-2xl bg-primary-600 text-white shadow-sm">
+
+                            <div
+                                class="
+                                    grid
+                                    size-10
+                                    place-items-center
+
+                                    rounded-xl
+
+                                    bg-primary-400/10
+                                    text-primary-300
+                                "
+                            >
+
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -245,116 +419,554 @@
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
-                                        d="M4 8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 15.5z"
+                                        d="m13 3-9 11h7l-1 7 9-11h-7z"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <p
+                                class="
+                                    mt-3
+                                    text-xs
+                                    font-black
+                                    text-white
+                                "
+                            >
+                                سرعت بالا
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-[10px]
+                                    leading-5
+                                    text-slate-500
+                                "
+                            >
+                                اینترنت پرسرعت فیبر نوری
+                            </p>
+
+                        </div>
+
+
+                        {{-- Feature 2 --}}
+                        <div
+                            class="
+                                rounded-2xl
+
+                                border
+                                border-white/10
+
+                                bg-white/5
+
+                                p-4
+
+                                backdrop-blur-xl
+
+                                transition
+                                duration-200
+
+                                hover:border-white/15
+                                hover:bg-white/[0.07]
+                            "
+                        >
+
+                            <div
+                                class="
+                                    grid
+                                    size-10
+                                    place-items-center
+
+                                    rounded-xl
+
+                                    bg-white/5
+                                    text-slate-300
+                                "
+                            >
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.8"
+                                    stroke="currentColor"
+                                    class="size-5"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="8.5"
                                     />
 
                                     <path
                                         stroke-linecap="round"
-                                        d="M8 12h.01M12 12h.01M16 12h.01"
+                                        d="
+                                            M3.5 12h17
+                                            M12 3.5
+                                            c2.2 2.4 3.2 5.2 3.2 8.5
+                                            S14.2 18.1 12 20.5
+                                            c-2.2-2.4-3.2-5.2-3.2-8.5
+                                            S9.8 5.9 12 3.5z
+                                        "
                                     />
                                 </svg>
-                            </span>
 
-                            <span>
-                                <span class="block text-sm font-black text-slate-950">
-                                    فیبر نوری
-                                </span>
+                            </div>
 
-                                <span class="mt-0.5 block text-[11px] text-slate-400">
-                                    اینترنت پرسرعت
-                                </span>
-                            </span>
-                        </a>
+                            <p
+                                class="
+                                    mt-3
+                                    text-xs
+                                    font-black
+                                    text-white
+                                "
+                            >
+                                اتصال پایدار
+                            </p>
 
-                    </div>
+                            <p
+                                class="
+                                    mt-1
+                                    text-[10px]
+                                    leading-5
+                                    text-slate-500
+                                "
+                            >
+                                ارتباط سریع و مطمئن
+                            </p>
 
-
-                    {{-- Form heading --}}
-                    <div>
-
-                        <span class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-[11px] font-black text-primary-700">
-                            ورود به سامانه
-                        </span>
-
-                        <h1 class="mt-4 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
-                            خوش آمدید
-                        </h1>
-
-                        <p class="mt-3 text-sm leading-7 text-slate-500">
-                            برای ورود، شماره موبایل خود را وارد کنید تا کد تأیید برای شما ارسال شود.
-                        </p>
-
-                    </div>
+                        </div>
 
 
-                    <div class="mt-6">
-                        <x-flash />
-                    </div>
+                        {{-- Feature 3 --}}
+                        <div
+                            class="
+                                rounded-2xl
 
+                                border
+                                border-primary-400/20
 
-                    <form
-                        method="POST"
-                        action="{{ route('auth.send-otp') }}"
-                        class="mt-6 space-y-5"
-                    >
-                        @csrf
+                                bg-primary-400/10
 
-                        <x-input
-                            name="mobile"
-                            label="شماره موبایل"
-                            type="tel"
-                            :value="old('mobile')"
-                            placeholder="09123456789"
-                            inputmode="numeric"
-                            autocomplete="tel"
-                            maxlength="11"
-                            required
-                        />
+                                p-4
 
-                        <p class="-mt-2 text-xs leading-6 text-slate-400">
-                            شماره موبایل را بدون فاصله و با فرمت ۰۹ وارد کنید.
-                        </p>
+                                transition
+                                duration-200
 
-                        <button
-                            type="submit"
-                            class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 text-sm font-black text-white shadow-sm transition hover:bg-primary-700 focus-visible:ring-4 focus-visible:ring-primary-100 active:scale-[0.99]"
+                                hover:bg-primary-400/[0.14]
+                            "
                         >
-                            دریافت کد تأیید
+
+                            <div
+                                class="
+                                    grid
+                                    size-10
+                                    place-items-center
+
+                                    rounded-xl
+
+                                    bg-primary-400/10
+                                    text-primary-300
+                                "
+                            >
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.8"
+                                    stroke="currentColor"
+                                    class="size-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M5 12.5 9 16l10-10"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <p
+                                class="
+                                    mt-3
+                                    text-xs
+                                    font-black
+                                    text-white
+                                "
+                            >
+                                ثبت آنلاین
+                            </p>
+
+                            <p
+                                class="
+                                    mt-1
+                                    text-[10px]
+                                    leading-5
+                                    text-slate-400
+                                "
+                            >
+                                ثبت و پیگیری ساده درخواست
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- Footer --}}
+                    <p
+                        class="
+                            mt-8
+                            text-[10px]
+                            text-slate-600
+
+                            sm:mt-10
+                            sm:text-[11px]
+                        "
+                    >
+                        © {{ now()->year }} شرکت مخابرات ایران
+                    </p>
+
+                </section>
+
+
+                {{-- =================================================
+                     LOGIN / OTP
+                ================================================== --}}
+
+                <section
+                    class="
+                        flex
+                        items-center
+                        justify-center
+
+                        lg:min-h-[640px]
+                    "
+                >
+
+                    <div
+                        class="
+                            w-full
+                            max-w-md
+
+                            rounded-[28px]
+
+                            border
+                            border-white/10
+
+                            bg-white
+
+                            p-5
+
+                            shadow-2xl
+                            shadow-black/30
+
+                            sm:p-7
+                            lg:p-8
+                        "
+                    >
+
+                        {{-- Card heading --}}
+                        <div>
+
+                            <span
+                                class="
+                                    inline-flex
+
+                                    rounded-full
+
+                                    bg-primary-50
+
+                                    px-3
+                                    py-1.5
+
+                                    text-[11px]
+                                    font-black
+                                    text-primary-700
+                                "
+                            >
+                                شروع ثبت‌نام
+                            </span>
+
+
+                            <h2
+                                class="
+                                    mt-4
+
+                                    text-2xl
+                                    font-black
+                                    tracking-tight
+                                    text-slate-950
+
+                                    sm:text-3xl
+                                "
+                            >
+                                ثبت درخواست فیبر نوری
+                            </h2>
+
+
+                            <p
+                                class="
+                                    mt-3
+
+                                    text-sm
+                                    leading-7
+                                    text-slate-500
+                                "
+                            >
+                                شماره موبایل خود را وارد کنید تا
+                                کد تأیید برای شما ارسال شود.
+                            </p>
+
+                        </div>
+
+
+                        {{-- Flash --}}
+                        <div class="mt-6">
+                            <x-flash />
+                        </div>
+
+
+                        {{-- OTP form --}}
+                        <form
+                            method="POST"
+                            action="{{ route('auth.send-otp') }}"
+                            class="mt-6 space-y-5"
+                        >
+
+                            @csrf
+
+
+                            <x-input
+                                name="mobile"
+                                label="شماره موبایل"
+                                type="tel"
+                                :value="old('mobile')"
+                                placeholder="09123456789"
+                                inputmode="numeric"
+                                autocomplete="tel"
+                                maxlength="11"
+                                required
+                            />
+
+
+                            <p
+                                class="
+                                    -mt-2
+
+                                    text-xs
+                                    leading-6
+                                    text-slate-400
+                                "
+                            >
+                                شماره موبایل را بدون فاصله و با فرمت ۰۹ وارد کنید.
+                            </p>
+
+
+                            <button
+                                type="submit"
+                                class="
+                                    inline-flex
+                                    min-h-12
+                                    w-full
+                                    items-center
+                                    justify-center
+                                    gap-2
+
+                                    rounded-xl
+
+                                    bg-primary-600
+
+                                    px-5
+
+                                    text-sm
+                                    font-black
+                                    text-white
+
+                                    shadow-sm
+
+                                    transition
+
+                                    hover:bg-primary-700
+
+                                    focus-visible:ring-4
+                                    focus-visible:ring-primary-100
+
+                                    active:scale-[0.99]
+                                "
+                            >
+
+                                دریافت کد تأیید
+
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    class="size-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="m9 5 7 7-7 7"
+                                    />
+                                </svg>
+
+                            </button>
+
+                        </form>
+
+
+                        {{-- Info --}}
+                        <div
+                            class="
+                                mt-6
+
+                                rounded-2xl
+
+                                border
+                                border-slate-100
+
+                                bg-slate-50
+
+                                p-4
+                            "
+                        >
+
+                            <div
+                                class="
+                                    flex
+                                    items-start
+                                    gap-3
+                                "
+                            >
+
+                                <div
+                                    class="
+                                        grid
+                                        size-9
+                                        shrink-0
+                                        place-items-center
+
+                                        rounded-xl
+
+                                        bg-primary-100
+                                        text-primary-700
+                                    "
+                                >
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.8"
+                                        stroke="currentColor"
+                                        class="size-4"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="
+                                                M12 11v5
+                                                m0-9.25v.1
+                                            "
+                                        />
+
+                                        <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="9"
+                                        />
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <p
+                                        class="
+                                            text-xs
+                                            font-black
+                                            text-slate-800
+                                        "
+                                    >
+                                        ثبت‌نام کاملاً آنلاین
+                                    </p>
+
+                                    <p
+                                        class="
+                                            mt-1
+                                            text-[11px]
+                                            leading-6
+                                            text-slate-500
+                                        "
+                                    >
+                                        پس از ورود می‌توانید درخواست،
+                                        وضعیت پوشش و مراحل پیگیری
+                                        سرویس خود را مشاهده کنید.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Trust --}}
+                        <div
+                            class="
+                                mt-6
+
+                                flex
+                                items-center
+                                justify-center
+                                gap-2
+
+                                text-[10px]
+                                font-bold
+                                text-slate-400
+                            "
+                        >
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                stroke-width="2"
+                                stroke-width="1.8"
                                 stroke="currentColor"
-                                class="size-5"
+                                class="size-4"
                             >
                                 <path
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    d="m9 5 7 7-7 7"
+                                    d="M12 3 5 6v5c0 4.6 2.8 8.1 7 10 4.2-1.9 7-5.4 7-10V6z"
+                                />
+
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m9 12 2 2 4-4"
                                 />
                             </svg>
-                        </button>
 
-                    </form>
+                            سامانه ثبت درخواست فیبر نوری
 
-
-                    <div class="mt-7 border-t border-slate-100 pt-5 text-center">
-
-                        <a
-                            href="{{ route('home') }}"
-                            class="text-xs font-bold text-slate-500 transition hover:text-primary-600"
-                        >
-                            بازگشت به سایت
-                        </a>
+                        </div>
 
                     </div>
 
-                </div>
-            </section>
+                </section>
+
+            </div>
 
         </div>
 
     </main>
+
 </x-layouts.auth>
+

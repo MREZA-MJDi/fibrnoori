@@ -16,14 +16,33 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])
+/*
+|--------------------------------------------------------------------------
+| Login is the main page
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [AuthController::class, 'showLogin'])
+    ->middleware('guest')
+    ->name('login');
+
+
+/*
+|--------------------------------------------------------------------------
+| Customer Home
+|--------------------------------------------------------------------------
+*/
+Route::get('/home', [HomeController::class, 'index'])
+    ->middleware('auth')
     ->name('home');
+
 
 Route::get('/tariffs', [HomeController::class, 'tariffs'])
     ->name('tariffs.index');
 
+
 Route::get('/modems', [HomeController::class, 'modems'])
     ->name('modems.index');
+
 
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
