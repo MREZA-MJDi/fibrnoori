@@ -1,6 +1,6 @@
 @props([
-'title' => 'فیبر نوری | اینترنت پرسرعت',
-'description' => 'سامانه فیبر نوری؛ مشاهده تعرفه‌ها، تجهیزات و ثبت درخواست اتصال اینترنت فیبر نوری.',
+'title' => 'ثبت نام فیبر نوری | مخابرات',
+'description' => 'سامانه ثبت‌نام و پیگیری اینترنت فیبر نوری مخابرات.',
 ])
 
 <!DOCTYPE html>
@@ -32,6 +32,7 @@
 
     <title>{{ $title }}</title>
 
+
     {{-- Vazirmatn --}}
     <link
         rel="preconnect"
@@ -49,17 +50,28 @@
         rel="stylesheet"
     >
 
+
     @vite([
     'resources/css/app.css',
+    'resources/css/site.css',
     'resources/js/app.js',
     ])
+
 
     @stack('head')
 
 </head>
 
 
-<body class="min-h-screen overflow-x-hidden bg-white text-slate-950 antialiased">
+<body
+    class="
+        min-h-screen
+        overflow-x-hidden
+        bg-white
+        text-slate-950
+        antialiased
+    "
+>
 
 <div
     x-data="{ mobileMenuOpen: false }"
@@ -67,15 +79,24 @@
     class="min-h-screen"
 >
 
+
     {{-- ==========================================================
          Mobile overlay
     =========================================================== --}}
+
     <div
         x-cloak
         x-show="mobileMenuOpen"
         x-transition.opacity
         @click="mobileMenuOpen = false"
-        class="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm lg:hidden"
+        class="
+            fixed
+            inset-0
+            z-40
+            bg-slate-950/40
+            backdrop-blur-sm
+            lg:hidden
+        "
         aria-hidden="true"
     ></div>
 
@@ -83,10 +104,14 @@
     {{-- ==========================================================
          Header
     =========================================================== --}}
+
     <header
         class="
-            sticky top-0 z-50
-            border-b border-slate-200/80
+            sticky
+            top-0
+            z-50
+            border-b
+            border-slate-200/80
             bg-white/95
             backdrop-blur-xl
         "
@@ -94,60 +119,112 @@
 
         <div class="site-container">
 
-            <div class="flex min-h-[72px] items-center gap-3 sm:min-h-[76px]">
+            <div
+                class="
+                    flex
+                    min-h-[72px]
+                    items-center
+                    gap-3
 
-                {{-- Brand --}}
+                    sm:min-h-[76px]
+                "
+            >
+
+
+                {{-- ==================================================
+                     Brand
+                =================================================== --}}
+
                 <a
                     href="{{ route('home') }}"
-                    class="group flex min-w-0 flex-1 items-center gap-3 lg:flex-none"
-                    aria-label="صفحه اصلی فیبر نوری"
+                    class="
+                        group
+                        flex
+                        min-w-0
+                        flex-1
+                        items-center
+                        gap-3
+
+                        lg:flex-none
+                    "
+                    aria-label="صفحه اصلی"
                 >
 
                     <span
                         class="
-                            grid size-11 shrink-0 place-items-center
+                            grid
+                            size-11
+                            shrink-0
+                            place-items-center
+
+                            overflow-hidden
+
                             rounded-2xl
-                            bg-primary-600
-                            text-white
+
+                            bg-white
+
                             shadow-sm
+
+                            ring-1
+                            ring-slate-200
+
                             transition
-                            group-hover:bg-primary-700
+
+                            group-hover:-translate-y-0.5
+                            group-hover:shadow-md
+                            group-hover:ring-primary-200
                         "
                     >
 
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.8"
-                            stroke="currentColor"
-                            class="size-5"
+                        <img
+                            src="{{ asset('images/tci-logo.png') }}"
+                            alt="شرکت مخابرات ایران"
+                            class="
+                                size-8
+                                object-contain
+
+                                transition-transform
+                                duration-200
+
+                                group-hover:scale-105
+                            "
                         >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M4 8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 15.5z"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                d="M8 12h.01M12 12h.01M16 12h.01"
-                            />
-
-                        </svg>
 
                     </span>
 
 
                     <span class="min-w-0">
 
-                        <span class="block truncate text-sm font-black text-slate-950 sm:text-base">
-                            فیبر نوری
+                        <span
+                            class="
+                                block
+                                truncate
+
+                                text-sm
+                                font-black
+                                text-slate-950
+
+                                sm:text-base
+                            "
+                        >
+                            فیبرنوری مخابرات
                         </span>
 
-                        <span class="mt-0.5 block truncate text-[10px] font-medium text-slate-400 sm:text-[11px]">
-                            اینترنت پرسرعت
+
+                        <span
+                            class="
+                                mt-0.5
+                                block
+                                truncate
+
+                                text-[10px]
+                                font-medium
+                                text-slate-400
+
+                                sm:text-[11px]
+                            "
+                        >
+                            اینترنت فیبر نوری
                         </span>
 
                     </span>
@@ -155,9 +232,19 @@
                 </a>
 
 
-                {{-- Desktop navigation --}}
+                {{-- ==================================================
+                     Desktop navigation
+                =================================================== --}}
+
                 <nav
-                    class="mr-8 hidden items-center gap-1 lg:flex"
+                    class="
+                        mr-8
+                        hidden
+                        items-center
+                        gap-1
+
+                        lg:flex
+                    "
                     aria-label="ناوبری اصلی"
                 >
 
@@ -211,8 +298,20 @@
                 </nav>
 
 
-                {{-- Desktop actions --}}
-                <div class="mr-auto hidden items-center gap-2 lg:flex">
+                {{-- ==================================================
+                     Desktop actions
+                =================================================== --}}
+
+                <div
+                    class="
+                        mr-auto
+                        hidden
+                        items-center
+                        gap-2
+
+                        lg:flex
+                    "
+                >
 
                     @auth
 
@@ -221,13 +320,24 @@
                             <a
                                 href="{{ route('admin.dashboard') }}"
                                 class="
-                                    inline-flex min-h-10 items-center justify-center
+                                    inline-flex
+                                    min-h-10
+                                    items-center
+                                    justify-center
+
                                     rounded-xl
-                                    border border-slate-200
+
+                                    border
+                                    border-slate-200
+
                                     px-4
-                                    text-xs font-black
+
+                                    text-xs
+                                    font-black
                                     text-slate-700
+
                                     transition
+
                                     hover:border-primary-200
                                     hover:bg-primary-50
                                     hover:text-primary-700
@@ -241,13 +351,24 @@
                             <a
                                 href="{{ route('account.dashboard') }}"
                                 class="
-                                    inline-flex min-h-10 items-center justify-center
+                                    inline-flex
+                                    min-h-10
+                                    items-center
+                                    justify-center
+
                                     rounded-xl
-                                    border border-slate-200
+
+                                    border
+                                    border-slate-200
+
                                     px-4
-                                    text-xs font-black
+
+                                    text-xs
+                                    font-black
                                     text-slate-700
+
                                     transition
+
                                     hover:border-primary-200
                                     hover:bg-primary-50
                                     hover:text-primary-700
@@ -258,21 +379,32 @@
 
                         @endif
 
+
                         <form
                             method="POST"
                             action="{{ route('auth.logout') }}"
                         >
+
                             @csrf
 
                             <button
                                 type="submit"
                                 class="
-                                    inline-flex min-h-10 items-center justify-center
+                                    inline-flex
+                                    min-h-10
+                                    items-center
+                                    justify-center
+
                                     rounded-xl
+
                                     px-3
-                                    text-xs font-bold
+
+                                    text-xs
+                                    font-bold
                                     text-slate-500
+
                                     transition
+
                                     hover:bg-red-50
                                     hover:text-red-600
                                 "
@@ -282,18 +414,30 @@
 
                         </form>
 
+
                     @else
 
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('login') }}"
                             class="
-                                inline-flex min-h-10 items-center justify-center
+                                inline-flex
+                                min-h-10
+                                items-center
+                                justify-center
+
                                 rounded-xl
-                                border border-slate-200
+
+                                border
+                                border-slate-200
+
                                 px-4
-                                text-xs font-black
+
+                                text-xs
+                                font-black
                                 text-slate-700
+
                                 transition
+
                                 hover:border-primary-200
                                 hover:bg-primary-50
                                 hover:text-primary-700
@@ -302,17 +446,29 @@
                             ورود
                         </a>
 
+
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('login') }}"
                             class="
-                                inline-flex min-h-10 items-center justify-center
+                                inline-flex
+                                min-h-10
+                                items-center
+                                justify-center
+
                                 rounded-xl
+
                                 bg-primary-600
+
                                 px-4
-                                text-xs font-black
+
+                                text-xs
+                                font-black
                                 text-white
+
                                 shadow-sm
+
                                 transition
+
                                 hover:bg-primary-700
                             "
                         >
@@ -324,8 +480,20 @@
                 </div>
 
 
-                {{-- Mobile action --}}
-                <div class="ml-auto flex items-center gap-2 lg:hidden">
+                {{-- ==================================================
+                     Mobile actions
+                =================================================== --}}
+
+                <div
+                    class="
+                        ml-auto
+                        flex
+                        items-center
+                        gap-2
+
+                        lg:hidden
+                    "
+                >
 
                     @auth
 
@@ -334,31 +502,54 @@
                                 ? route('admin.dashboard')
                                 : route('account.dashboard') }}"
                             class="
-                                hidden min-h-10
-                                items-center justify-center
+                                hidden
+                                min-h-10
+                                items-center
+                                justify-center
+
                                 rounded-xl
+
                                 bg-primary-50
+
                                 px-3
-                                text-xs font-black
+
+                                text-xs
+                                font-black
                                 text-primary-700
+
                                 sm:inline-flex
                             "
                         >
-                            {{ auth()->user()->isAdmin() ? 'مدیریت' : 'حساب من' }}
+                            {{ auth()->user()->isAdmin()
+                                ? 'مدیریت'
+                                : 'حساب من' }}
                         </a>
+
 
                     @else
 
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('login') }}"
                             class="
-                                hidden min-h-10
-                                items-center justify-center
+                                hidden
+                                min-h-10
+                                items-center
+                                justify-center
+
                                 rounded-xl
+
                                 bg-primary-600
+
                                 px-3
-                                text-xs font-black
+
+                                text-xs
+                                font-black
                                 text-white
+
+                                transition
+
+                                hover:bg-primary-700
+
                                 sm:inline-flex
                             "
                         >
@@ -368,23 +559,35 @@
                     @endauth
 
 
+                    {{-- Menu button --}}
+
                     <button
                         type="button"
                         @click="mobileMenuOpen = !mobileMenuOpen"
                         :aria-expanded="mobileMenuOpen.toString()"
                         aria-controls="mobile-site-navigation"
+                        aria-label="منوی سایت"
                         class="
-                            grid size-11 place-items-center
+                            grid
+                            size-11
+                            place-items-center
+
                             rounded-xl
-                            border border-slate-200
+
+                            border
+                            border-slate-200
+
                             bg-white
+
                             text-slate-600
+
                             shadow-sm
+
                             transition
+
                             hover:bg-slate-50
                             hover:text-slate-950
                         "
-                        aria-label="منوی سایت"
                     >
 
                         <svg
@@ -432,7 +635,10 @@
             </div>
 
 
-            {{-- Mobile navigation --}}
+            {{-- ==================================================
+                 Mobile navigation
+            =================================================== --}}
+
             <div
                 id="mobile-site-navigation"
                 x-cloak
@@ -443,7 +649,13 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-2"
-                class="border-t border-slate-100 py-3 lg:hidden"
+                class="
+                    border-t
+                    border-slate-100
+                    py-3
+
+                    lg:hidden
+                "
             >
 
                 <nav
@@ -514,13 +726,23 @@
                                 : route('account.dashboard') }}"
                             @click="mobileMenuOpen = false"
                             class="
-                                flex min-h-12 items-center justify-center
+                                flex
+                                min-h-12
+                                items-center
+                                justify-center
+
                                 rounded-xl
+
                                 bg-primary-600
+
                                 px-4
-                                text-sm font-black
+
+                                text-sm
+                                font-black
                                 text-white
+
                                 transition
+
                                 hover:bg-primary-700
                             "
                         >
@@ -534,20 +756,33 @@
                             method="POST"
                             action="{{ route('auth.logout') }}"
                         >
+
                             @csrf
 
                             <button
                                 type="submit"
                                 class="
-                                    flex min-h-12 w-full
-                                    items-center justify-center
+                                    flex
+                                    min-h-12
+                                    w-full
+                                    items-center
+                                    justify-center
+
                                     rounded-xl
-                                    border border-red-100
+
+                                    border
+                                    border-red-100
+
                                     bg-red-50
+
                                     px-4
-                                    text-sm font-black
+
+                                    text-sm
+                                    font-black
                                     text-red-600
+
                                     transition
+
                                     hover:bg-red-100
                                 "
                             >
@@ -556,19 +791,30 @@
 
                         </form>
 
+
                     @else
 
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('login') }}"
                             @click="mobileMenuOpen = false"
                             class="
-                                flex min-h-12 items-center justify-center
+                                flex
+                                min-h-12
+                                items-center
+                                justify-center
+
                                 rounded-xl
+
                                 bg-primary-600
+
                                 px-4
-                                text-sm font-black
+
+                                text-sm
+                                font-black
                                 text-white
+
                                 transition
+
                                 hover:bg-primary-700
                             "
                         >
@@ -589,6 +835,7 @@
     {{-- ==========================================================
          Main
     =========================================================== --}}
+
     <main class="min-h-[calc(100vh-72px)]">
 
         {{ $slot }}
@@ -599,55 +846,107 @@
     {{-- ==========================================================
          Footer
     =========================================================== --}}
-    <footer class="border-t border-slate-200 bg-slate-950 text-white">
+
+    <footer
+        class="
+            border-t
+            border-slate-200
+            bg-slate-950
+            text-white
+        "
+    >
 
         <div class="site-container">
 
-            <div class="grid gap-8 py-10 sm:grid-cols-2 sm:gap-10 sm:py-12 lg:grid-cols-4 lg:py-14">
+            <div
+                class="
+                    grid
+                    gap-8
+                    py-10
 
-                {{-- Brand --}}
-                <div class="sm:col-span-2 lg:col-span-2">
+                    sm:grid-cols-2
+                    sm:gap-10
+                    sm:py-12
+
+                    lg:grid-cols-4
+                    lg:py-14
+                "
+            >
+
+                {{-- ==================================================
+                     Brand
+                =================================================== --}}
+
+                <div
+                    class="
+                        sm:col-span-2
+                        lg:col-span-2
+                    "
+                >
 
                     <a
                         href="{{ route('home') }}"
-                        class="inline-flex items-center gap-3"
+                        class="
+                            group
+                            inline-flex
+                            items-center
+                            gap-3
+                        "
                     >
 
-                        <span class="grid size-11 place-items-center rounded-2xl bg-primary-600 text-white">
+                        <span
+                            class="
+                                grid
+                                size-11
+                                shrink-0
+                                place-items-center
 
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.8"
-                                stroke="currentColor"
-                                class="size-5"
+                                overflow-hidden
+
+                                rounded-2xl
+
+                                bg-white
+
+                                ring-1
+                                ring-white/10
+
+                                transition
+
+                                group-hover:-translate-y-0.5
+                            "
+                        >
+
+                            <img
+                                src="{{ asset('images/tci-logo.png') }}"
+                                alt="شرکت مخابرات ایران"
+                                class="size-8 object-contain"
                             >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M4 8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 15.5z"
-                                />
-
-                                <path
-                                    stroke-linecap="round"
-                                    d="M8 12h.01M12 12h.01M16 12h.01"
-                                />
-
-                            </svg>
 
                         </span>
 
 
                         <span>
 
-                            <span class="block text-sm font-black">
-                                فیبر نوری
+                            <span
+                                class="
+                                    block
+                                    text-sm
+                                    font-black
+                                "
+                            >
+                                شرکت مخابرات ایران
                             </span>
 
-                            <span class="mt-0.5 block text-[11px] text-slate-400">
-                                اینترنت پرسرعت و پایدار
+
+                            <span
+                                class="
+                                    mt-0.5
+                                    block
+                                    text-[11px]
+                                    text-slate-400
+                                "
+                            >
+                                اینترنت فیبر نوری
                             </span>
 
                         </span>
@@ -655,47 +954,105 @@
                     </a>
 
 
-                    <p class="mt-5 max-w-xl text-sm leading-8 text-slate-400">
-                        درخواست اتصال اینترنت فیبر نوری را به‌صورت آنلاین ثبت کنید،
-                        تعرفه‌ها و تجهیزات را بررسی کنید و وضعیت درخواست خود را پیگیری کنید.
+                    <p
+                        class="
+                            mt-5
+                            max-w-xl
+                            text-sm
+                            leading-8
+                            text-slate-400
+                        "
+                    >
+                        درخواست اتصال اینترنت فیبر نوری را به‌صورت آنلاین
+                        ثبت کنید، تعرفه‌ها و تجهیزات را بررسی کنید و وضعیت
+                        درخواست خود را پیگیری نمایید.
                     </p>
 
                 </div>
 
 
-                {{-- Quick links --}}
+                {{-- ==================================================
+                     Quick links
+                =================================================== --}}
+
                 <div>
 
-                    <h3 class="text-sm font-black">
+                    <h3
+                        class="
+                            text-sm
+                            font-black
+                        "
+                    >
                         دسترسی سریع
                     </h3>
 
-                    <nav class="mt-4 space-y-2">
+
+                    <nav
+                        class="
+                            mt-4
+                            space-y-2
+                        "
+                    >
 
                         <a
                             href="{{ route('home') }}"
-                            class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                            class="
+                                block
+                                py-1
+                                text-xs
+                                font-medium
+                                text-slate-400
+                                transition
+                                hover:text-white
+                            "
                         >
                             خانه
                         </a>
 
+
                         <a
                             href="{{ route('tariffs.index') }}"
-                            class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                            class="
+                                block
+                                py-1
+                                text-xs
+                                font-medium
+                                text-slate-400
+                                transition
+                                hover:text-white
+                            "
                         >
                             تعرفه‌ها
                         </a>
 
+
                         <a
                             href="{{ route('modems.index') }}"
-                            class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                            class="
+                                block
+                                py-1
+                                text-xs
+                                font-medium
+                                text-slate-400
+                                transition
+                                hover:text-white
+                            "
                         >
                             مودم‌ها
                         </a>
 
+
                         <a
                             href="{{ route('contact') }}"
-                            class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                            class="
+                                block
+                                py-1
+                                text-xs
+                                font-medium
+                                text-slate-400
+                                transition
+                                hover:text-white
+                            "
                         >
                             تماس با ما
                         </a>
@@ -705,14 +1062,28 @@
                 </div>
 
 
-                {{-- Account --}}
+                {{-- ==================================================
+                     Account
+                =================================================== --}}
+
                 <div>
 
-                    <h3 class="text-sm font-black">
+                    <h3
+                        class="
+                            text-sm
+                            font-black
+                        "
+                    >
                         حساب کاربری
                     </h3>
 
-                    <nav class="mt-4 space-y-2">
+
+                    <nav
+                        class="
+                            mt-4
+                            space-y-2
+                        "
+                    >
 
                         @auth
 
@@ -720,27 +1091,77 @@
                                 href="{{ auth()->user()->isAdmin()
                                     ? route('admin.dashboard')
                                     : route('account.dashboard') }}"
-                                class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                                class="
+                                    block
+                                    py-1
+                                    text-xs
+                                    font-medium
+                                    text-slate-400
+                                    transition
+                                    hover:text-white
+                                "
                             >
                                 {{ auth()->user()->isAdmin()
                                     ? 'پنل مدیریت'
                                     : 'حساب کاربری' }}
                             </a>
 
+
+                            <form
+                                method="POST"
+                                action="{{ route('auth.logout') }}"
+                            >
+
+                                @csrf
+
+                                <button
+                                    type="submit"
+                                    class="
+                                        py-1
+                                        text-xs
+                                        font-medium
+                                        text-slate-400
+                                        transition
+                                        hover:text-red-400
+                                    "
+                                >
+                                    خروج
+                                </button>
+
+                            </form>
+
+
                         @else
 
                             <a
-                                href="{{ route('auth.login') }}"
-                                class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                                href="{{ route('login') }}"
+                                class="
+                                    block
+                                    py-1
+                                    text-xs
+                                    font-medium
+                                    text-slate-400
+                                    transition
+                                    hover:text-white
+                                "
                             >
                                 ورود
                             </a>
 
                         @endauth
 
+
                         <a
                             href="{{ route('contact') }}"
-                            class="block py-1 text-xs font-medium text-slate-400 transition hover:text-white"
+                            class="
+                                block
+                                py-1
+                                text-xs
+                                font-medium
+                                text-slate-400
+                                transition
+                                hover:text-white
+                            "
                         >
                             پشتیبانی
                         </a>
@@ -752,13 +1173,24 @@
             </div>
 
 
-            {{-- Bottom --}}
+            {{-- ==================================================
+                 Footer bottom
+            =================================================== --}}
+
             <div
                 class="
-                    flex flex-col gap-2
-                    border-t border-white/10
+                    flex
+                    flex-col
+                    gap-2
+
+                    border-t
+                    border-white/10
+
                     py-5
-                    text-[11px] text-slate-500
+
+                    text-[11px]
+                    text-slate-500
+
                     sm:flex-row
                     sm:items-center
                     sm:justify-between
@@ -766,8 +1198,10 @@
             >
 
                 <p>
-                    © {{ now()->year }} فیبر نوری. تمامی حقوق محفوظ است.
+                    © {{ now()->year }} شرکت مخابرات ایران.
+                    تمامی حقوق محفوظ است.
                 </p>
+
 
                 <p>
                     طراحی و توسعه با Laravel
@@ -788,8 +1222,10 @@
     }
 </style>
 
+
 @stack('scripts')
 
 </body>
 
 </html>
+

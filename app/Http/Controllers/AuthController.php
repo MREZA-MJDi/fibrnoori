@@ -78,12 +78,6 @@ class AuthController extends Controller
                 );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Never trust the mobile number sent by the browser.
-        |--------------------------------------------------------------------------
-        */
-
         $this->otpService->verify(
             $mobile,
             $request->validated('code')
@@ -111,12 +105,6 @@ class AuthController extends Controller
         request()
             ->session()
             ->regenerate();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Clear temporary OTP session data after successful login.
-        |--------------------------------------------------------------------------
-        */
 
         session()->forget([
             'auth.otp.mobile',
@@ -149,10 +137,10 @@ class AuthController extends Controller
         }
 
         return redirect()
-            ->route('account.dashboard')
+            ->route('home')
             ->with(
                 'success',
-                'با موفقیت وارد حساب کاربری شدید.'
+                'با موفقیت وارد شدید.'
             );
     }
 
@@ -169,12 +157,10 @@ class AuthController extends Controller
             ->regenerateToken();
 
         return redirect()
-            ->route('home')
+            ->route('auth.login')
             ->with(
                 'success',
                 'با موفقیت از حساب خارج شدید.'
             );
     }
-
-
 }

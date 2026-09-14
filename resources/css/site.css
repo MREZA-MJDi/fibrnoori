@@ -1,25 +1,58 @@
 @import "tailwindcss";
 
 @theme {
-    --color-primary-50: #f0fdf4;
-    --color-primary-100: #dcfce7;
-    --color-primary-200: #bbf7d0;
-    --color-primary-300: #86efac;
-    --color-primary-400: #4ade80;
-    --color-primary-500: #22c55e;
-    --color-primary-600: #16a34a;
-    --color-primary-700: #15803d;
-    --color-primary-800: #166534;
-    --color-primary-900: #14532d;
-    --color-primary-950: #052e16;
+    /*
+    |--------------------------------------------------------------------------
+    | Primary — Telecom Blue
+    |--------------------------------------------------------------------------
+    */
 
-    --color-site-bg: #ffffff;
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Site colors
+    |--------------------------------------------------------------------------
+    */
+
+    --color-site-bg: #f8fafc;
     --color-site-surface: #ffffff;
-    --color-site-muted: #f8fafc;
+    --color-site-muted: #f1f5f9;
 
     --color-site-text: #0f172a;
     --color-site-text-muted: #64748b;
-    --color-site-border: #e2e8f0;
+    --color-site-border: #dbe3ee;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accent
+    |--------------------------------------------------------------------------
+    */
+
+    --color-accent-50: #f0f9ff;
+    --color-accent-100: #e0f2fe;
+    --color-accent-500: #0ea5e9;
+    --color-accent-600: #0284c7;
+    --color-accent-700: #0369a1;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Typography
+    |--------------------------------------------------------------------------
+    */
 
     --font-sans:
         "Vazirmatn",
@@ -28,7 +61,15 @@
         sans-serif;
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Base
+|--------------------------------------------------------------------------
+*/
+
 @layer base {
+
     html {
         min-width: 320px;
         scroll-behavior: smooth;
@@ -42,19 +83,23 @@
         color: var(--color-site-text);
 
         font-family: var(--font-sans);
+
         font-size: 15px;
         line-height: 1.8;
 
         text-rendering: optimizeLegibility;
+
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+
 
     *,
     *::before,
     *::after {
         box-sizing: border-box;
     }
+
 
     button,
     input,
@@ -63,6 +108,7 @@
         font: inherit;
     }
 
+
     img,
     svg,
     video,
@@ -70,14 +116,27 @@
         max-width: 100%;
     }
 
+
     img {
         height: auto;
     }
+
 
     a,
     button {
         -webkit-tap-highlight-color: transparent;
     }
+
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+        outline: 3px solid rgb(37 99 235 / 0.20);
+        outline-offset: 2px;
+    }
+
 
     ::selection {
         background: var(--color-primary-100);
@@ -85,25 +144,67 @@
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Shared site components
+|--------------------------------------------------------------------------
+*/
+
 @layer components {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Container
+    |--------------------------------------------------------------------------
+    */
+
     .site-container {
         width: 100%;
         max-width: 1280px;
+
         margin-inline: auto;
+
         padding-inline: 1rem;
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Section
+    |--------------------------------------------------------------------------
+    */
+
     .site-section {
         width: 100%;
+
         padding-block: 4rem;
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Card
+    |--------------------------------------------------------------------------
+    */
+
     .site-card {
         border: 1px solid var(--color-site-border);
+
         border-radius: 1.5rem;
+
         background: var(--color-site-surface);
-        box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+
+        box-shadow:
+            0 1px 2px rgb(15 23 42 / 0.04);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Card hover
+    |--------------------------------------------------------------------------
+    */
 
     .site-card-hover {
         transition:
@@ -112,37 +213,99 @@
             transform 180ms ease;
     }
 
+
     .site-card-hover:hover {
         border-color: var(--color-primary-200);
+
         box-shadow:
-            0 18px 40px -18px rgb(15 23 42 / 0.14),
-            0 4px 12px -8px rgb(15 23 42 / 0.08);
+            0 20px 45px -20px rgb(15 23 42 / 0.14),
+            0 6px 16px -10px rgb(15 23 42 / 0.08);
+
         transform: translateY(-2px);
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prose
+    |--------------------------------------------------------------------------
+    */
+
     .site-prose {
         max-width: 70ch;
+
         color: var(--color-site-text-muted);
+
         line-height: 2;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Telecom surface
+    |--------------------------------------------------------------------------
+    */
+
+    .site-telecom-surface {
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #f8fbff 100%
+            );
+
+        border: 1px solid #dbeafe;
+
+        box-shadow:
+            0 12px 35px -20px rgb(37 99 235 / 0.18);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Telecom subtle gradient
+    |--------------------------------------------------------------------------
+    */
+
+    .site-telecom-gradient {
+        background:
+            linear-gradient(
+                135deg,
+                #eff6ff 0%,
+                #ffffff 48%,
+                #f0f9ff 100%
+            );
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Mobile
+|--------------------------------------------------------------------------
+*/
+
 @media (max-width: 639px) {
+
     body {
         font-size: 14px;
     }
+
 
     .site-container {
         padding-inline: 0.875rem;
     }
 
+
     .site-section {
         padding-block: 2.75rem;
     }
 
+
     .site-card {
         border-radius: 1.25rem;
     }
+
 
     h1,
     h2,
@@ -152,47 +315,93 @@
     h6,
     p,
     a,
-    button {
+    button,
+    td,
+    th,
+    label {
         overflow-wrap: anywhere;
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Small tablets
+|--------------------------------------------------------------------------
+*/
+
 @media (min-width: 640px) {
+
     .site-container {
         padding-inline: 1.25rem;
     }
+
 
     .site-section {
         padding-block: 5rem;
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Tablets
+|--------------------------------------------------------------------------
+*/
+
 @media (min-width: 768px) {
+
     .site-container {
         padding-inline: 1.5rem;
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Desktop
+|--------------------------------------------------------------------------
+*/
+
 @media (min-width: 1024px) {
+
     .site-container {
         padding-inline: 2rem;
     }
+
 
     .site-section {
         padding-block: 6rem;
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Large desktop
+|--------------------------------------------------------------------------
+*/
+
 @media (min-width: 1280px) {
+
     .site-container {
         padding-inline: 2.5rem;
     }
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Reduced motion
+|--------------------------------------------------------------------------
+*/
+
 @media (prefers-reduced-motion: reduce) {
+
     html {
         scroll-behavior: auto;
     }
+
 
     *,
     *::before,
