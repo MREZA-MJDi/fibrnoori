@@ -15,6 +15,10 @@
         content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
+    {{-- ==========================================================
+         BASIC META
+    =========================================================== --}}
+
     <meta
         name="theme-color"
         content="#2563eb"
@@ -25,8 +29,84 @@
         content="{{ $description }}"
     >
 
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
     <title>{{ $title }}</title>
 
+
+    {{-- ==========================================================
+         OPEN GRAPH
+         Used by link previews in messaging apps / social apps
+    =========================================================== --}}
+
+    <meta
+        property="og:type"
+        content="website"
+    >
+
+    <meta
+        property="og:site_name"
+        content="فیبر نوری"
+    >
+
+    <meta
+        property="og:title"
+        content="{{ $title }}"
+    >
+
+    <meta
+        property="og:description"
+        content="{{ $description }}"
+    >
+
+    <meta
+        property="og:url"
+        content="{{ url()->current() }}"
+    >
+
+    <meta
+        property="og:image"
+        content="{{ asset('images/og-fibernet.jpg') }}"
+    >
+
+    <meta
+        property="og:image:alt"
+        content="فیبر نوری"
+    >
+
+
+    {{-- ==========================================================
+         TWITTER / X
+    =========================================================== --}}
+
+    <meta
+        name="twitter:card"
+        content="summary_large_image"
+    >
+
+    <meta
+        name="twitter:title"
+        content="{{ $title }}"
+    >
+
+    <meta
+        name="twitter:description"
+        content="{{ $description }}"
+    >
+
+
+    <meta
+        name="twitter:image:alt"
+        content="فیبر نوری"
+    >
+
+
+    {{-- ==========================================================
+         VITE
+    =========================================================== --}}
 
     @vite([
     'resources/css/app.css',

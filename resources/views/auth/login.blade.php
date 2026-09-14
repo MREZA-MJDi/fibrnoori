@@ -1,6 +1,6 @@
 <x-layouts.auth
-    title="ثبت‌نام فیبر نوری | مخابرات"
-    description="سامانه ثبت‌نام و پیگیری اینترنت فیبر نوری مخابرات."
+    title="ثبت‌نام فیبر نوری | فیبر"
+    description="سامانه ثبت‌نام و پیگیری اینترنت فیبر نوری"
 >
 
     <main
@@ -95,7 +95,7 @@
 
                             <img
                                 src="{{ asset('images/tci-logo.png') }}"
-                                alt="شرکت مخابرات ایران"
+                                alt="فیبر نوری"
                                 class="
                                     size-11
                                     object-contain
@@ -115,7 +115,7 @@
                                     text-slate-950
                                 "
                             >
-                                فیبر نوری مخابرات ایران
+                                فیبر نوری
                             </h1>
 
                             <p
@@ -155,6 +155,7 @@
                                 text-primary-700
                             "
                         >
+
                             <span
                                 class="
                                     size-2
@@ -164,6 +165,7 @@
                             ></span>
 
                             ثبت‌نام اینترنت پرسرعت
+
                         </span>
 
 
@@ -325,6 +327,7 @@
                                     stroke="currentColor"
                                     class="size-5"
                                 >
+
                                     <circle
                                         cx="12"
                                         cy="12"
@@ -342,6 +345,7 @@
                                             S9.8 5.9 12 3.5z
                                         "
                                     />
+
                                 </svg>
 
                             </div>
@@ -513,7 +517,7 @@
 
                                 <img
                                     src="{{ asset('images/tci-logo.png') }}"
-                                    alt="شرکت مخابرات ایران"
+                                    alt="فیبر نوری"
                                     class="
                                         size-8
                                         object-contain
@@ -532,7 +536,7 @@
                                         text-slate-950
                                     "
                                 >
-                                    فیبر نوری مخابرات ایران
+                                    فیبر نوری
                                 </div>
 
                                 <div
