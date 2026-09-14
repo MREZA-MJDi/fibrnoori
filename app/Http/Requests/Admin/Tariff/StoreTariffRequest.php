@@ -3,12 +3,13 @@
 namespace App\Http\Requests\Admin\Tariff;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTariffRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->isAdmin();
     }
 
     public function rules(): array
@@ -24,7 +25,7 @@ class StoreTariffRequest extends FormRequest
                 'required',
                 'string',
                 'max:180',
-                'unique:tariffs,slug',
+                Rule::unique('tariffs', 'slug'),
             ],
 
             'speed_mbps' => [

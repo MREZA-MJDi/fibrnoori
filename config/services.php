@@ -15,7 +15,9 @@ return [
             '9998624173'
         ),
     ],
-
+    'super_admin' => [
+        'mobile' => env('SUPER_ADMIN_MOBILE'),
+    ],
     'sms' => [
         'secretary_mobile' => env('SMS_SECRETARY_MOBILE'),
     ],

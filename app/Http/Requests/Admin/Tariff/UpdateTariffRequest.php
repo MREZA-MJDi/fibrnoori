@@ -9,7 +9,7 @@ class UpdateTariffRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->check();
+        return auth()->check() && auth()->user()->isAdmin();
     }
 
     public function rules(): array
@@ -28,7 +28,7 @@ class UpdateTariffRequest extends FormRequest
                 'string',
                 'max:180',
                 Rule::unique('tariffs', 'slug')
-                    ->ignore($tariff),
+                    ->ignore($tariff->id),
             ],
 
             'speed_mbps' => [

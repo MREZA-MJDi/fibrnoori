@@ -83,22 +83,57 @@ class AuthController extends Controller
             $request->validated('code')
         );
 
+        $superAdminMobile = config(
+            'services.super_admin.mobile'
+        );
+
+        $isSuperAdmin = $mobile === $superAdminMobile;
+
         $user = User::firstOrCreate(
             [
                 'mobile' => $mobile,
             ],
             [
                 'name' => null,
-                'role' => 'customer',
+                'role' => $isSuperAdmin
+                    ? 'admin'
+                    : 'customer',
                 'mobile_verified_at' => now(),
             ]
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Super Admin role
+        |--------------------------------------------------------------------------
+        |
+        | شماره تعریف‌شده در SUPER_ADMIN_MOBILE همیشه Admin باقی می‌ماند.
+        |
+        */
+
+        if ($isSuperAdmin && $user->role !== 'admin') {
+            $user->forceFill([
+                'role' => 'admin',
+            ])->save();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Mobile verification
+        |--------------------------------------------------------------------------
+        */
 
         if (!$user->mobile_verified_at) {
             $user->forceFill([
                 'mobile_verified_at' => now(),
             ])->save();
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Login
+        |--------------------------------------------------------------------------
+        */
 
         Auth::login($user);
 
@@ -117,6 +152,23 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         */
 
+        if ($user->isAdmin()) {
+            session()->forget('url.intended');
+
+            return redirect()
+                ->route('admin.dashboard')
+                ->with(
+                    'success',
+                    'با موفقیت وارد پنل مدیریت شدید.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Customer destination
+        |--------------------------------------------------------------------------
+        */
+
         $intended = session()->pull('url.intended');
 
         if ($intended) {
@@ -124,15 +176,6 @@ class AuthController extends Controller
                 ->with(
                     'success',
                     'با موفقیت وارد حساب کاربری شدید.'
-                );
-        }
-
-        if ($user->isAdmin()) {
-            return redirect()
-                ->route('admin.dashboard')
-                ->with(
-                    'success',
-                    'با موفقیت وارد پنل مدیریت شدید.'
                 );
         }
 

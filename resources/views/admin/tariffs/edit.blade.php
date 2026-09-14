@@ -5,14 +5,20 @@
 
     <div class="mx-auto w-full max-w-4xl space-y-6">
 
-        {{-- Header --}}
+        {{-- ==========================================================
+             Header
+        =========================================================== --}}
         <section>
 
-            <span class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700">
+            <span
+                class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700"
+            >
                 مدیریت تعرفه‌ها
             </span>
 
-            <h2 class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">
+            <h2
+                class="mt-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl"
+            >
                 ویرایش تعرفه
             </h2>
 
@@ -28,7 +34,11 @@
         <x-flash />
 
 
+        {{-- ==========================================================
+             Update form
+        =========================================================== --}}
         <form
+            id="tariff-update-form"
             method="POST"
             action="{{ route('admin.tariffs.update', $tariff) }}"
             class="space-y-6"
@@ -38,8 +48,12 @@
             @method('PUT')
 
 
-            {{-- Basic information --}}
-            <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            {{-- ======================================================
+                 Basic information
+            ======================================================= --}}
+            <section
+                class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+            >
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
 
@@ -56,6 +70,7 @@
 
                 <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
+                    {{-- Name --}}
                     <x-input
                         name="name"
                         label="نام تعرفه"
@@ -64,6 +79,7 @@
                     />
 
 
+                    {{-- Slug --}}
                     <x-input
                         name="slug"
                         label="Slug"
@@ -73,6 +89,7 @@
                     />
 
 
+                    {{-- Speed --}}
                     <x-input
                         name="speed_mbps"
                         label="سرعت (Mbps)"
@@ -84,6 +101,7 @@
                     />
 
 
+                    {{-- Duration --}}
                     <x-input
                         name="duration_days"
                         label="مدت (روز)"
@@ -95,17 +113,64 @@
                     />
 
 
-                    <x-input
-                        name="price"
-                        label="قیمت (تومان)"
-                        type="number"
-                        :value="old('price', $tariff->price)"
-                        min="0"
-                        inputmode="numeric"
-                        required
-                    />
+                    {{-- ==================================================
+                         Price
+                    =================================================== --}}
+                    @php
+                        $priceValue = old('price', $tariff->price);
+                    @endphp
+
+                    <div class="space-y-2">
+
+                        <label
+                            for="price_display"
+                            class="block text-sm font-bold text-slate-800"
+                        >
+                            قیمت (تومان)
+                        </label>
+
+                        <div class="relative">
+
+                            <input
+                                id="price_display"
+                                type="text"
+                                inputmode="numeric"
+                                autocomplete="off"
+                                value="{{ $priceValue !== null && $priceValue !== '' ? number_format((int) $priceValue) : '' }}"
+                                class="block min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 pl-16 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
+                                placeholder="مثلاً 1,500,000"
+                                dir="ltr"
+                            >
+
+                            <span
+                                class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-xs font-bold text-slate-400"
+                            >
+                                تومان
+                            </span>
+
+                        </div>
+
+                        <input
+                            id="price"
+                            name="price"
+                            type="hidden"
+                            value="{{ old('price', $tariff->price) }}"
+                        >
+
+                        <p class="text-[11px] font-medium text-slate-400">
+                            مبلغ را بدون واحد وارد کنید؛ جداکننده سه‌رقمی به‌صورت خودکار اعمال می‌شود.
+                        </p>
+
+                        @error('price')
+                        <p class="text-xs font-medium leading-5 text-red-600">
+                            {{ $message }}
+                        </p>
+                        @enderror
+
+                    </div>
 
 
+                    {{-- Sort order --}}
                     <x-input
                         name="sort_order"
                         label="ترتیب نمایش"
@@ -120,8 +185,12 @@
             </section>
 
 
-            {{-- Description & features --}}
-            <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+            {{-- ==========================================================
+                 Description & features
+            =========================================================== --}}
+            <section
+                class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+            >
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
 
@@ -129,11 +198,16 @@
                         توضیحات و امکانات
                     </h3>
 
+                    <p class="mt-1 text-sm text-slate-500">
+                        توضیح کوتاه و امکاناتی که مشتری دریافت می‌کند.
+                    </p>
+
                 </div>
 
 
                 <div class="space-y-5 p-5 sm:p-7">
 
+                    {{-- Description --}}
                     <div class="space-y-2">
 
                         <label
@@ -160,10 +234,17 @@
                     </div>
 
 
+                    {{-- Features --}}
                     @php
-                        $features = old('features', is_array($tariff->features) ? $tariff->features : []);
-                    @endphp
+                        $features = old(
+                            'features',
+                            is_array($tariff->features)
+                                ? $tariff->features
+                                : []
+                        );
 
+                        $featureCount = max(5, count($features));
+                    @endphp
 
                     <div class="space-y-2">
 
@@ -176,7 +257,7 @@
 
                         <div class="space-y-2">
 
-                            @for ($i = 0; $i < max(5, count($features)); $i++)
+                            @for ($i = 0; $i < $featureCount; $i++)
 
                                 <input
                                     id="feature-{{ $i }}"
@@ -210,8 +291,12 @@
             </section>
 
 
-            {{-- Status --}}
-            <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+            {{-- ==========================================================
+                 Status
+            =========================================================== --}}
+            <section
+                class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7"
+            >
 
                 <div class="flex items-start gap-4">
 
@@ -241,66 +326,145 @@
 
                 </div>
 
+                @error('is_active')
+                <p class="mt-2 text-xs font-medium leading-5 text-red-600">
+                    {{ $message }}
+                </p>
+                @enderror
+
             </section>
 
+        </form>
 
-            {{-- Actions --}}
-            {{-- Actions --}}
-            <div class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-                <form
-                    method="POST"
-                    action="{{ route('admin.tariffs.destroy', $tariff) }}"
-                    onsubmit="return confirm('آیا از حذف این تعرفه مطمئن هستید؟');"
+        {{-- ==========================================================
+             Actions
+        =========================================================== --}}
+        <div
+            class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+
+            {{-- Delete --}}
+            <form
+                method="POST"
+                action="{{ route('admin.tariffs.destroy', $tariff) }}"
+                onsubmit="return confirm('آیا از حذف این تعرفه مطمئن هستید؟');"
+            >
+
+                @csrf
+                @method('DELETE')
+
+                <button
+                    type="submit"
+                    class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-red-50 px-5 text-sm font-black text-red-700 transition hover:bg-red-100 sm:w-auto"
                 >
-                    @csrf
-                    @method('DELETE')
+                    حذف تعرفه
+                </button>
 
-                    <button
-                        type="submit"
-                        class="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-red-50 px-5 text-sm font-black text-red-700 transition hover:bg-red-100 sm:w-auto"
+            </form>
+
+
+            {{-- Save / Cancel --}}
+            <div class="flex flex-col gap-3 sm:flex-row">
+
+                <a
+                    href="{{ route('admin.tariffs.index') }}"
+                    class="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 px-5 text-sm font-black text-slate-700 transition hover:bg-slate-50"
+                >
+                    انصراف
+                </a>
+
+
+                <button
+                    type="submit"
+                    form="tariff-update-form"
+                    class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-black text-white shadow-sm transition hover:bg-primary-700 focus-visible:ring-4 focus-visible:ring-primary-100"
+                >
+                    ذخیره تغییرات
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="size-5"
                     >
-                        حذف تعرفه
-                    </button>
-                </form>
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m5 12 4 4L19 7"
+                        />
+                    </svg>
 
-
-                <div class="flex flex-col gap-3 sm:flex-row">
-
-                    <a
-                        href="{{ route('admin.tariffs.index') }}"
-                        class="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 px-5 text-sm font-black text-slate-700 transition hover:bg-slate-50"
-                    >
-                        انصراف
-                    </a>
-
-                    <button
-                        type="submit"
-                        class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-black text-white shadow-sm transition hover:bg-primary-700"
-                    >
-                        ذخیره تغییرات
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="2"
-                            stroke="currentColor"
-                            class="size-5"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="m5 12 4 4L19 7"
-                            />
-                        </svg>
-                    </button>
-
-                </div>
+                </button>
 
             </div>
-        </form>
+
+        </div>
 
     </div>
 
+
+    {{-- ==============================================================
+         Price formatter
+    =============================================================== --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const displayInput = document.getElementById('price_display');
+            const hiddenInput = document.getElementById('price');
+
+            if (!displayInput || !hiddenInput) {
+                return;
+            }
+
+            const normalizeDigits = (value) => {
+                return value
+                    .replace(/[۰-۹]/g, (digit) =>
+                        String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit))
+                    )
+                    .replace(/[٠-٩]/g, (digit) =>
+                        String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit))
+                    );
+            };
+
+            const formatPrice = (value) => {
+
+                const normalized = normalizeDigits(value);
+
+                const digits = normalized.replace(/\D/g, '');
+
+                if (!digits) {
+                    return '';
+                }
+
+                return Number(digits).toLocaleString('en-US');
+            };
+
+            const syncPrice = () => {
+
+                const formatted = formatPrice(displayInput.value);
+
+                displayInput.value = formatted;
+
+                hiddenInput.value = formatted.replace(/,/g, '');
+            };
+
+            displayInput.addEventListener('input', syncPrice);
+
+            displayInput.addEventListener('paste', function () {
+
+                setTimeout(() => {
+                    syncPrice();
+                }, 0);
+
+            });
+
+            syncPrice();
+
+        });
+    </script>
+
 </x-layouts.admin>
+

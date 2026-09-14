@@ -33,7 +33,7 @@
                     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
 
                         <a
-                            href="{{ route('requests.index') }}"
+                            href="{{ route('auth.login') }}"
                             class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-black text-white shadow-lg shadow-primary-950/20 transition hover:-translate-y-0.5 hover:bg-primary-500"
                         >
                             ثبت درخواست اتصال
@@ -475,7 +475,7 @@
                     <div class="mt-6 flex flex-col gap-3 sm:flex-row">
 
                         <a
-                            href="{{ route('requests.index') }}"
+                            href="{{ route('auth.login') }}"
                             class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 text-sm font-black text-primary-700 transition hover:bg-primary-50"
                         >
                             ثبت درخواست

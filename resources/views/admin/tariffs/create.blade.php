@@ -5,7 +5,6 @@
 
     <div class="mx-auto w-full max-w-4xl space-y-6">
 
-        {{-- Header --}}
         <section>
 
             <span class="inline-flex rounded-full bg-primary-50 px-3 py-1.5 text-xs font-black text-primary-700">
@@ -22,9 +21,7 @@
 
         </section>
 
-
         <x-flash />
-
 
         <form
             method="POST"
@@ -34,8 +31,6 @@
 
             @csrf
 
-
-            {{-- Basic information --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
@@ -50,7 +45,6 @@
 
                 </div>
 
-
                 <div class="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
 
                     <x-input
@@ -61,7 +55,6 @@
                         required
                     />
 
-
                     <x-input
                         name="slug"
                         label="Slug"
@@ -70,7 +63,6 @@
                         dir="ltr"
                         required
                     />
-
 
                     <x-input
                         name="speed_mbps"
@@ -82,7 +74,6 @@
                         required
                     />
 
-
                     <x-input
                         name="duration_days"
                         label="مدت (روز)"
@@ -93,7 +84,6 @@
                         required
                     />
 
-
                     <x-input
                         name="price"
                         label="قیمت (تومان)"
@@ -103,7 +93,6 @@
                         inputmode="numeric"
                         required
                     />
-
 
                     <x-input
                         name="sort_order"
@@ -118,8 +107,6 @@
 
             </section>
 
-
-            {{-- Description --}}
             <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
                 <div class="border-b border-slate-100 px-5 py-5 sm:px-7">
@@ -133,7 +120,6 @@
                     </p>
 
                 </div>
-
 
                 <div class="space-y-5 p-5 sm:p-7">
 
@@ -162,11 +148,10 @@
 
                     </div>
 
-
                     <div class="space-y-2">
 
                         <label
-                            for="features"
+                            for="feature-0"
                             class="block text-sm font-bold text-slate-800"
                         >
                             امکانات
@@ -177,6 +162,7 @@
                             @for ($i = 0; $i < 5; $i++)
 
                                 <input
+                                    id="feature-{{ $i }}"
                                     type="text"
                                     name="features[]"
                                     value="{{ old('features.' . $i) }}"
@@ -206,8 +192,6 @@
 
             </section>
 
-
-            {{-- Status --}}
             <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
                 <div class="flex items-start gap-4">
@@ -246,8 +230,6 @@
 
             </section>
 
-
-            {{-- Actions --}}
             <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
 
                 <a
@@ -256,7 +238,6 @@
                 >
                     انصراف
                 </a>
-
 
                 <button
                     type="submit"
@@ -278,7 +259,6 @@
                             d="m5 12 4 4L19 7"
                         />
                     </svg>
-
                 </button>
 
             </div>

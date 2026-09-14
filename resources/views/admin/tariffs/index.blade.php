@@ -5,7 +5,6 @@
 
     <div class="space-y-6">
 
-        {{-- Header --}}
         <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
 
             <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
@@ -51,22 +50,17 @@
 
         </section>
 
-
         <x-flash />
 
-
-        {{-- Tariffs --}}
         <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
 
             @if ($tariffs->isNotEmpty())
 
-                {{-- Desktop --}}
                 <div class="hidden overflow-x-auto md:block">
 
                     <table class="w-full min-w-[900px] text-right">
 
                         <thead class="border-b border-slate-200 bg-slate-50">
-
                         <tr>
                             <th class="px-6 py-4 text-xs font-black text-slate-500">
                                 تعرفه
@@ -94,7 +88,6 @@
 
                             <th class="px-6 py-4"></th>
                         </tr>
-
                         </thead>
 
                         <tbody class="divide-y divide-slate-100">
@@ -104,7 +97,6 @@
                             <tr class="transition hover:bg-slate-50/70">
 
                                 <td class="px-6 py-5">
-
                                     <p class="text-sm font-black text-slate-900">
                                         {{ $tariff->name }}
                                     </p>
@@ -112,12 +104,9 @@
                                     <p class="mt-1 font-mono text-[11px] text-slate-400">
                                         {{ $tariff->slug }}
                                     </p>
-
                                 </td>
 
-
                                 <td class="px-6 py-5">
-
                                     <span class="text-sm font-black text-slate-900">
                                         {{ number_format($tariff->speed_mbps) }}
                                     </span>
@@ -125,12 +114,9 @@
                                     <span class="text-xs text-slate-400">
                                         Mbps
                                     </span>
-
                                 </td>
 
-
                                 <td class="px-6 py-5">
-
                                     <span class="text-sm font-black text-slate-900">
                                         {{ number_format($tariff->duration_days) }}
                                     </span>
@@ -138,12 +124,9 @@
                                     <span class="text-xs text-slate-400">
                                         روز
                                     </span>
-
                                 </td>
 
-
                                 <td class="px-6 py-5">
-
                                     <p class="text-sm font-black text-slate-900">
                                         {{ number_format($tariff->price) }}
                                     </p>
@@ -151,9 +134,7 @@
                                     <p class="mt-1 text-xs text-slate-400">
                                         تومان
                                     </p>
-
                                 </td>
-
 
                                 <td class="px-6 py-5">
 
@@ -173,15 +154,11 @@
 
                                 </td>
 
-
                                 <td class="px-6 py-5">
-
                                     <span class="text-sm font-bold text-slate-700">
                                         {{ number_format($tariff->sort_order) }}
                                     </span>
-
                                 </td>
-
 
                                 <td class="px-6 py-5">
 
@@ -224,8 +201,6 @@
 
                 </div>
 
-
-                {{-- Mobile --}}
                 <div class="divide-y divide-slate-100 md:hidden">
 
                     @foreach ($tariffs as $tariff)
@@ -246,7 +221,6 @@
 
                                 </div>
 
-
                                 @if ($tariff->is_active)
 
                                     <span class="shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700">
@@ -263,11 +237,9 @@
 
                             </div>
 
-
                             <div class="mt-4 grid grid-cols-2 gap-3">
 
                                 <div class="rounded-2xl bg-slate-50 p-3">
-
                                     <p class="text-[11px] font-bold text-slate-400">
                                         سرعت
                                     </p>
@@ -276,12 +248,9 @@
                                         {{ number_format($tariff->speed_mbps) }}
                                         Mbps
                                     </p>
-
                                 </div>
 
-
                                 <div class="rounded-2xl bg-slate-50 p-3">
-
                                     <p class="text-[11px] font-bold text-slate-400">
                                         قیمت
                                     </p>
@@ -293,11 +262,9 @@
                                     <p class="mt-0.5 text-[10px] text-slate-400">
                                         تومان
                                     </p>
-
                                 </div>
 
                             </div>
-
 
                             <div class="mt-3 rounded-2xl bg-slate-50 p-3">
 
@@ -312,14 +279,12 @@
 
                             </div>
 
-
                             <div class="mt-4 flex items-center justify-between gap-3">
 
                                 <span class="text-[11px] font-bold text-slate-400">
                                     ترتیب نمایش:
                                     {{ number_format($tariff->sort_order) }}
                                 </span>
-
 
                                 <div class="flex gap-2">
 
@@ -355,7 +320,6 @@
                     @endforeach
 
                 </div>
-
 
                 @if ($tariffs->hasPages())
 
