@@ -62,11 +62,11 @@
                                 </p>
 
                                 <a
-                                    href="tel:+982100000000"
+                                    href="tel:+989022291544"
                                     dir="ltr"
                                     class="mt-2 block text-lg font-black text-slate-900 transition hover:text-primary-600"
                                 >
-                                    ۰۲۱-۰۰۰۰۰۰۰۰
+                                    09022291544
                                 </a>
 
                                 <p class="mt-1 text-xs text-slate-400">
