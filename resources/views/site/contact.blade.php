@@ -81,51 +81,60 @@
 
 
                     {{-- Email --}}
+
                     <article class="site-card p-5 sm:p-6">
 
                         <div class="flex items-start gap-4">
 
-                            <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-blue-50 text-blue-700">
+        <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-blue-50 text-blue-700">
 
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.8"
-                                    stroke="currentColor"
-                                    class="size-5"
-                                >
-                                    <rect
-                                        width="18"
-                                        height="14"
-                                        x="3"
-                                        y="5"
-                                        rx="2"
-                                    />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.8"
+                stroke="currentColor"
+                class="size-5"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.5 12.5h7M12 9v7"
+                />
 
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="m4 7 8 6 8-6"
-                                    />
-                                </svg>
+                <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                />
+            </svg>
 
-                            </span>
+        </span>
 
 
                             <div class="min-w-0">
 
-                                <p class="text-xs font-bold text-slate-400">
-                                    ایمیل
-                                </p>
+                                <div class="mt-2 space-y-2">
 
-                                <a
-                                    href="mailto:info@example.com"
-                                    dir="ltr"
-                                    class="mt-2 block break-all text-sm font-black text-slate-900 transition hover:text-primary-600"
-                                >
-                                    info@example.com
-                                </a>
+                                    <a
+                                        href="https://eitaa.com/zarin2714"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="block text-sm font-black text-slate-900 transition hover:text-primary-600"
+                                    >
+                                        ایتا
+                                    </a>
+
+                                    <a
+                                        href="https://rubika.ir/zarin2714"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="block text-sm font-black text-slate-900 transition hover:text-primary-600"
+                                    >
+                                        روبیکا
+                                    </a>
+
+                                </div>
 
                                 <p class="mt-1 text-xs text-slate-400">
                                     برای ارتباط و دریافت اطلاعات
@@ -136,6 +145,7 @@
                         </div>
 
                     </article>
+
 
 
                     {{-- Working hours --}}
