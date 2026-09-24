@@ -32,8 +32,9 @@
 
                     <div class="mt-8 flex flex-col gap-3 sm:flex-row">
 
+                        {{-- Go directly to request form --}}
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('account.requests.create') }}"
                             class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary-600 px-6 text-sm font-black text-white shadow-lg shadow-primary-950/20 transition hover:-translate-y-0.5 hover:bg-primary-500"
                         >
                             ثبت درخواست اتصال
@@ -54,6 +55,8 @@
                             </svg>
                         </a>
 
+
+                        {{-- Public tariffs --}}
                         <a
                             href="{{ route('tariffs.index') }}"
                             class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-6 text-sm font-black text-white transition hover:bg-white/10"
@@ -377,8 +380,10 @@
                         تمام مراحل ثبت درخواست آنلاین طراحی شده‌اند تا سریع و بدون سردرگمی انجام شوند.
                     </p>
 
+
+                    {{-- Go directly to request form --}}
                     <a
-                        href="{{ route('auth.login') }}"
+                        href="{{ route('account.requests.create') }}"
                         class="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary-600 px-5 text-sm font-black text-white transition hover:bg-primary-700"
                     >
                         شروع ثبت درخواست
@@ -474,13 +479,16 @@
 
                     <div class="mt-6 flex flex-col gap-3 sm:flex-row">
 
+                        {{-- Go directly to request form --}}
                         <a
-                            href="{{ route('auth.login') }}"
+                            href="{{ route('account.requests.create') }}"
                             class="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 text-sm font-black text-primary-700 transition hover:bg-primary-50"
                         >
                             ثبت درخواست
                         </a>
 
+
+                        {{-- Public tariffs --}}
                         <a
                             href="{{ route('tariffs.index') }}"
                             class="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-6 text-sm font-black text-white transition hover:bg-white/10"
