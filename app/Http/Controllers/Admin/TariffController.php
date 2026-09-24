@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Tariff\StoreTariffRequest;
 use App\Http\Requests\Admin\Tariff\UpdateTariffRequest;
 use App\Models\Tariff;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TariffController extends Controller
@@ -71,6 +72,19 @@ class TariffController extends Controller
     public function destroy(
         Tariff $tariff
     ): RedirectResponse {
+        $hasRequests = DB::table('fiber_requests')
+            ->where('tariff_id', $tariff->id)
+            ->exists();
+
+        if ($hasRequests) {
+            return redirect()
+                ->route('admin.tariffs.index')
+                ->with(
+                    'error',
+                    'این تعرفه قبلاً در درخواست‌های ثبت‌شده استفاده شده و قابل حذف نیست.'
+                );
+        }
+
         $tariff->delete();
 
         return redirect()
