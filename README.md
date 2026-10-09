@@ -1,203 +1,44 @@
 # Fibrnoori
 
-**Fibrnoori** is a modern web platform for ordering and managing fiber-optic internet services. The platform provides users with a simple online process to explore available plans and modems, submit a fiber-optic connection request, and track the status of their application.
+Fibrnoori is a Laravel platform for presenting fiber-optic internet plans and equipment and collecting online connection requests. The documented customer journey includes mobile-number verification, plan selection, optional modem selection, customer/address details, submission, and request-status tracking. SMS delivery and any provider integration require valid environment configuration.
 
-## About
+## Technology
+- PHP `^8.2`, Laravel `^12.0`
+- Blade, JavaScript, Vite
+- Laravel Eloquent, migrations and seeders
+- Verta for Persian/Jalali date handling
 
-Fibrnoori was developed to simplify the process of requesting fiber-optic internet services through a modern web interface.
+## Requirements
+PHP 8.2+, Composer, Node.js/npm, and a supported database (for example MySQL/MariaDB).
 
-Instead of relying on traditional registration processes, users can explore available internet plans, review available equipment, authenticate using their mobile number, provide their required information and address, and submit their connection request online.
-
-The platform is designed around a straightforward user experience while providing a structured foundation for managing service requests.
-
-## Features
-
-* Fiber-optic internet service presentation
-* Internet plan and tariff listing
-* Modem and equipment listing
-* Online fiber-optic connection requests
-* Mobile number authentication
-* Verification-code based login
-* Customer information collection
-* Address registration
-* Request status tracking
-* Customer account area
-* Responsive RTL interface
-* Structured service-request workflow
-
-## User Flow
-
-The connection request process is designed around a simple multi-step workflow:
-
-```text
-Mobile Authentication
-        ↓
-Select Internet Plan
-        ↓
-Select Modem (Optional)
-        ↓
-Enter Customer Information
-        ↓
-Enter Address
-        ↓
-Submit Connection Request
-        ↓
-Track Request Status
-```
-
-## Main Sections
-
-### Home
-
-The landing page introduces the fiber-optic service and highlights key benefits such as high speed, connection stability, and online request submission.
-
-### Internet Plans
-
-Users can browse available internet tariffs and choose a suitable service based on their requirements.
-
-### Modems
-
-The platform provides information about available modems and equipment that can be selected during the connection process.
-
-### Connection Request
-
-Users can start an online connection request and provide the information required for service activation.
-
-### Customer Account
-
-Authenticated users can access their account and follow the status of their submitted connection requests.
-
-## Technology Stack
-
-* **Backend:** PHP, Laravel
-* **Frontend:** Blade, HTML, CSS, JavaScript
-* **Database:** MySQL
-* **Build Tool:** Vite
-* **Architecture:** MVC
-* **Authentication:** Mobile number / verification code
-* **ORM:** Laravel Eloquent
-
-## Architecture
-
-The application follows Laravel's MVC architecture and separates the main responsibilities of the application into dedicated layers.
-
-```text
-app/
-├── Http/
-│   ├── Controllers/
-│   └── Requests/
-├── Models/
-└── ...
-
-database/
-├── migrations/
-└── seeders/
-
-resources/
-├── views/
-└── ...
-
-routes/
-└── web.php
-```
-
-This structure makes the application easier to maintain and provides a clear foundation for extending the service-request workflow.
-
-## Installation
-
-Clone the repository:
-
+## Local installation
 ```bash
 git clone https://github.com/MREZA-MJDi/fibrnoori.git
 cd fibrnoori
-```
-
-Install PHP dependencies:
-
-```bash
 composer install
 ```
 
-Install frontend dependencies:
-
-```bash
-npm install
-```
-
-Create the environment file:
-
-```bash
-cp .env.example .env
-```
-
-Generate the Laravel application key:
+Copy `.env.example` to `.env` (`copy .env.example .env` in Windows CMD; `cp .env.example .env` on macOS/Linux), create a database, and configure the `DB_*` settings. Review the environment file for any SMS or verification-provider settings and fill them with development credentials where applicable.
 
 ```bash
 php artisan key:generate
-```
-
-Configure the database and required environment variables in `.env`.
-
-Run database migrations:
-
-```bash
 php artisan migrate
-```
-
-If seed data is available:
-
-```bash
-php artisan db:seed
-```
-
-Create the storage link when required:
-
-```bash
+npm install
+npm run build
 php artisan storage:link
-```
-
-Start the Laravel development server:
-
-```bash
 php artisan serve
 ```
 
-Run Vite during development:
+Browse to `http://127.0.0.1:8000`. During development, run `npm run dev` in another terminal for Vite hot reload.
 
+## Tests
 ```bash
-npm run dev
+php artisan test
 ```
 
-## Production Build
+## Operations and security
+Do not publish SMS API tokens or production configuration. Test verification and request-status transitions in a non-production environment. Do not run `migrate:fresh` or reset seeders against production data.
 
-Build the frontend assets for production:
-
-```bash
-npm run build
-```
-
-## Project Goals
-
-The main goal of Fibrnoori is to provide a clear and accessible digital workflow for fiber-optic internet registration.
-
-The project focuses on:
-
-* Simplifying the connection-request process
-* Reducing unnecessary registration steps
-* Providing clear service and equipment information
-* Allowing customers to track their requests
-* Building a maintainable Laravel application architecture
-
-## Live Website
-
-**Fibrnoori — Fiber-Optic Internet Platform**
-
-https://fibernet.cam/
-
-## Author
-
-**Mohammad Reza Majidi**
-
-Full-Stack Web Developer
-
-GitHub: https://github.com/MREZA-MJDi
+## Links
+- Repository: https://github.com/MREZA-MJDi/fibrnoori
+- Laravel documentation: https://laravel.com/docs/12.x
