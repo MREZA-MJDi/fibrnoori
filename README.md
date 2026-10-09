@@ -2,6 +2,9 @@
 
 Fibrnoori is a Laravel platform for presenting fiber-optic internet plans and equipment and collecting online connection requests. The documented customer journey includes mobile-number verification, plan selection, optional modem selection, customer/address details, submission, and request-status tracking. SMS delivery and any provider integration require valid environment configuration.
 
+## Dedicated dashboard
+Fibrnoori has its own dedicated dashboard for managing the platform's service-request workflow. SMS verification, request processing, and other integrations should be validated in the target environment before launch.
+
 ## Technology
 - PHP `^8.2`, Laravel `^12.0`
 - Blade, JavaScript, Vite
